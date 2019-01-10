@@ -1,8 +1,18 @@
 import * as express from 'express';
+import * as SocketIO from 'socket.io';
+import {Server} from 'http';
+import { Socket } from 'net';
 
 const app = express();
+const server = new Server(app);
+const io = new SocketIO(server);
 const serverPort = 5000;
 
-app.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
+io.on('connection', (socket: Socket) => {
+    socket.on('request change color', (message: String) => {
+        const colors = ['green', 'red', 'yellow', 'orange', 'lime', 'blue'];
+        io.sockets.emit('change color', colors[Math.floor(Math.random() * colors.length)]);
+    });
+});
 
-app.get('/express_backend', (req, res) => res.send({'express': 'YOUR EXPRESS BACKEND IS CONNECTED TO REACTs'}))
+server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));

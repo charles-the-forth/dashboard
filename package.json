@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "global": "^4.3.2",
+    "http": "^0.0.0",
+    "socket.io": "^2.2.0",
     "typescript": "^3.2.2"
   },
   "devDependencies": {
