@@ -23,8 +23,8 @@ io.on('connection', (socket: Socket) => {
             if (buffer.indexOf('\n') !== -1) {
                 const data = buffer.substring(0, buffer.indexOf('\n'));
                 buffer = buffer.substring(buffer.indexOf('\n') + 1);
-                
-                io.sockets.emit('data updated', arrayToObject(data.split(/[=;]/)));
+
+                io.sockets.emit('data updated', transformToDataObject(data.split(/[=;]/)));
             }
         });
     });
@@ -32,10 +32,15 @@ io.on('connection', (socket: Socket) => {
 
 server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
 
-const arrayToObject = array => {
+const transformToDataObject = array => {
     const result = {};
+    const date = new Date();
+
     for (let i = 0; i < array.length; i += 2) {
-        result[array[i]] = array[i + 1];
+        result[array[i]] = {
+            name: `${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds}`,
+            value: parseFloat(array[i + 1])
+        };
     }
     return result;
 };
