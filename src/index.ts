@@ -38,7 +38,7 @@ const transformToDataObject = array => {
 
     for (let i = 0; i < array.length; i += 2) {
         result[array[i]] = {
-            name: `${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds}`,
+            time: `${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`,
             value: parseFloat(array[i + 1])
         };
     }
