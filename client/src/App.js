@@ -6,6 +6,7 @@ import {append} from 'ramda';
 import PressureChart from './PressureChart/PressureChart';
 import SpeedChart from './SpeedChart/SpeedChart';
 import HeightChart from './HeightChart/HeightChart';
+import MapTile from './MapTile/MapTile';
 
 class App extends Component {
 
@@ -30,21 +31,24 @@ class App extends Component {
           maxShowedValues: 20
         }
       },
+      lat: 0,
+      lng: 0,
       socket: openSocket('http://localhost:5000', {transports: ['websocket']})
     };
 
-    this.state.socket.on('data updated', ({temperature, pressure, speed, height}) => 
+    this.state.socket.on('data updated', ({temperature, pressure, speed, height, lat, lng}) => 
       this.setState({
         temperature: append(temperature, this.state.temperature),
         pressure: append(pressure, this.state.pressure),
         speed: append(speed, this.state.speed),
-        height: append(height, this.state.height)
+        height: append(height, this.state.height),
+        lat: parseFloat(lat.value),
+        lng: parseFloat(lng.value)
       }));
       
   }
 
   render() {
-    console.log(this.state.temperature);
     return (
       <div className="charts-container">
         <TemperatureChart data={this.state.temperature} config={this.state.config.temperature}/>
@@ -53,6 +57,7 @@ class App extends Component {
           <SpeedChart data={this.state.speed} config={this.state.config.speed}/>
           <HeightChart data={this.state.height} config={this.state.config.height}/>
         </div>
+        <MapTile lat={this.state.lat} lng={this.state.lng}/>
       </div>
     );
   }
