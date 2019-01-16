@@ -1,9 +1,0 @@
-.charts-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.double-chart-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
