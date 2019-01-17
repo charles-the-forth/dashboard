@@ -6,11 +6,8 @@ import PressureChart from '../../components/PressureChart/PressureChart';
 import SpeedChart from '../../components/SpeedChart/SpeedChart';
 import HeightChart from '../../components/HeightChart/HeightChart';
 import MapTile from '../../components/MapTile/MapTile';
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
-import logo from '../../images/cansat.png';
+import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
@@ -80,18 +77,7 @@ class Dashboard extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <AppBar position="relative" className={classes.appBar}>
-          <Toolbar>
-            <img src={logo} className={classes.logo} alt="logo" />
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap>
-              Charles the Fourth
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <CanSatAppBar signal={80}/>
         <Grid container spacing={16} className={classes.mainGrid}>
           <Grid item lg={6}>
             <Paper className={classes.paper}>

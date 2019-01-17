@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
-import logo from '../../images/cansat.png';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,16 +9,9 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import MeasurementNameDialog from '../../components/MeasurementNameDialog/MeasurementNameDialog';
+import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 
 const styles = theme => ({
-    logo: {
-        width: '36px',
-        paddingRight: '8px'
-    },
-    appBar: {
-        backgroundColor: 'white',
-        color: 'black'
-    },
     mainGrid: {
         width: 'calc(100% - 32px)',
         margin: '16px 8px'
@@ -135,18 +125,7 @@ class Manager extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <AppBar position="relative" className={classes.appBar}>
-                    <Toolbar>
-                        <img src={logo} className={classes.logo} alt="logo" />
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            color="inherit"
-                            noWrap>
-                            Charles the Fourth
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
+                <CanSatAppBar signal={80}/>
                 <Grid container spacing={16} className={classes.mainGrid}>
                     {this.state.measurements.map(this.renderMeasurement)}
                 </Grid>
