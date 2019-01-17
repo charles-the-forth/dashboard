@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import openSocket from 'socket.io-client'
 import TemperatureChart from '../../components/TemperatureChart/TemperatureChart';
-import { append } from 'ramda';
+import { append, pathOr } from 'ramda';
 import PressureChart from '../../components/PressureChart/PressureChart';
 import SpeedChart from '../../components/SpeedChart/SpeedChart';
 import HeightChart from '../../components/HeightChart/HeightChart';
@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   logo: {
@@ -74,10 +75,19 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, location } = this.props;
+    console.log(this.props);
     return (
       <div>
-        <CanSatAppBar signal={80}/>
+        <CanSatAppBar signal={80}>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap>
+            {pathOr('', ['state', 'measurement', 'name'], location)}
+          </Typography>
+        </CanSatAppBar>
         <Grid container spacing={16} className={classes.mainGrid}>
           <Grid item lg={6}>
             <Paper className={classes.paper}>
@@ -100,7 +110,7 @@ class Dashboard extends Component {
           </Grid>
           <Grid item lg={6}>
             <Paper className={classes.paper}>
-              <MapTile lat={this.state.lat} lng={this.state.lng} style={{height: '380px'}} />
+              <MapTile lat={this.state.lat} lng={this.state.lng} style={{ height: '380px' }} />
             </Paper>
           </Grid>
         </Grid>

@@ -16,30 +16,40 @@ const styles = theme => ({
         paddingRight: '8px'
     },
     grow: {
-        flexGrow: '1'
+        display: 'flex',
+        flexGrow: '1',
+        justifyContent: 'center'
     },
     signalContainer: {
-        marginTop: '10px'
+        display: 'flex',
+        justifyContent: 'flex-end',
+        marginTop: '10px',
+        width: '212px'
     }
 });
 
-const CanSatAppBar = ({ classes, signal }) => (
-    <AppBar position="relative" className={classes.appBar}>
-        <Toolbar>
-            <img src={logo} className={classes.logo} alt="logo" />
-            <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap>
-                Charles the Fourth
-            </Typography>
-            <div className={classes.grow}></div>
-            <div className={classes.signalContainer}>
-                <SignalProgress signal={signal}/>
-            </div>
-        </Toolbar>
-    </AppBar>
-);
+const CanSatAppBar = ({ classes, signal, children }) => {
+    console.log(children);
+    return (
+        <AppBar position="relative" className={classes.appBar}>
+            <Toolbar>
+                <img src={logo} className={classes.logo} alt="logo" />
+                <Typography
+                    component="h1"
+                    variant="h6"
+                    color="inherit"
+                    noWrap>
+                    Charles the Fourth
+                </Typography>
+                <div className={classes.grow}>
+                    {children}
+                </div>
+                <div className={classes.signalContainer}>
+                    <SignalProgress signal={signal}/>
+                </div>
+            </Toolbar>
+        </AppBar>
+    );
+}
 
 export default withStyles(styles)(CanSatAppBar);

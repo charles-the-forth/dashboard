@@ -45,25 +45,25 @@ class Manager extends Component {
         this.state = {
             measurements: [
                 {
-                    id: 4,
+                    number: 4,
                     name: 'Čtvrté měření s dlouhým názvem',
                     timeStart: new Date('January 15, 2019 15:24:00'),
                     timeEnd: new Date('January 15, 2019 15:29:00')
                 },
                 {
-                    id: 3,
+                    number: 3,
                     name: 'Třetí měření',
                     timeStart: new Date('January 14, 2019 15:24:00'),
                     timeEnd: new Date('January 14, 2019 15:29:00')
                 },
                 {
-                    id: 2,
+                    number: 2,
                     name: 'Druhé měření',
                     timeStart: new Date('January 13, 2019 15:24:00'),
                     timeEnd: new Date('January 13, 2019 15:29:00')
                 },
                 {
-                    id: 1,
+                    number: 1,
                     name: 'První měření',
                     timeStart: new Date('January 12, 2019 15:24:00'),
                     timeEnd: new Date('January 12, 2019 15:29:00')
@@ -78,21 +78,24 @@ class Manager extends Component {
         this.setState({openDialog: false});
     }
 
-    handleCreate({ number, name }) {
+    handleCreate(measurement) {
         this.setState({openDialog: false});
-        this.props.history.push(`/dashboard/${number}`);
+        this.props.history.push({pathname: `/dashboard/${measurement.number}`, state: {measurement}});
     }
 
     openNameDialog() {
         this.setState({openDialog: true});
     }
 
-    openDashboard(number) {
-        this.props.history.push(`/dashboard/${number}`);
+    openDashboard(measurement) {
+        this.props.history.push({
+            pathname: `/dashboard/${measurement.number}`,
+            state: {measurement}
+        });
     }
 
-    renderMeasurement = ({ id, name, timeStart, timeEnd }) => (
-        <Grid item key={id} lg={2}>
+    renderMeasurement = ({ number, name, timeStart, timeEnd }) => (
+        <Grid item key={number} lg={2}>
             <Card className={this.props.classes.measurementCard}>
                 <CardContent>
                     <Typography color="textSecondary" gutterBottom>
@@ -115,7 +118,7 @@ class Manager extends Component {
                     </div>
                 </CardContent>
                 <CardActions className={this.props.classes.cardActions}>
-                    <Button size="small" color="secondary" onClick={() => this.openDashboard(id)}>Zobrazit výsledky</Button>
+                    <Button size="small" color="secondary" onClick={() => this.openDashboard({number, name})}>Zobrazit výsledky</Button>
                 </CardActions>
             </Card>
         </Grid>
