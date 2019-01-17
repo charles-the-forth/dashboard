@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
-import { Link } from 'react-router-dom'
+import MeasurementNameDialog from '../../components/MeasurementNameDialog/MeasurementNameDialog';
 
 const styles = theme => ({
     logo: {
@@ -26,7 +26,7 @@ const styles = theme => ({
         width: 'calc(100% - 32px)',
         margin: '16px 8px'
     },
-    addButtonLink: {
+    addButton: {
         position: 'fixed',
         bottom: '16px',
         right: '16px'
@@ -36,6 +36,15 @@ const styles = theme => ({
     },
     row: {
         marginTop: '16px'
+    },
+    measurementName: {
+        height: '62px',
+        maxHeight: '62px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    },
+    measurementCard: {
+        height: '300px'
     }
 });
 
@@ -47,7 +56,7 @@ class Manager extends Component {
             measurements: [
                 {
                     id: 4,
-                    name: 'Čtvrté měření',
+                    name: 'Čtvrté měření s dlouhým názvem',
                     timeStart: new Date('January 15, 2019 15:24:00'),
                     timeEnd: new Date('January 15, 2019 15:29:00')
                 },
@@ -75,14 +84,31 @@ class Manager extends Component {
 
     twoZeroFormat = number => number < 10 ? '0' + number : number;
 
+    handleCancel() {
+        this.setState({openDialog: false});
+    }
+
+    handleCreate({ number, name }) {
+        this.setState({openDialog: false});
+        this.props.history.push(`/dashboard/${number}`);
+    }
+
+    openNameDialog() {
+        this.setState({openDialog: true});
+    }
+
+    openDashboard(number) {
+        this.props.history.push(`/dashboard/${number}`);
+    }
+
     renderMeasurement = ({ id, name, timeStart, timeEnd }) => (
-        <Grid item key={id}>
-            <Card>
+        <Grid item key={id} lg={2}>
+            <Card className={this.props.classes.measurementCard}>
                 <CardContent>
                     <Typography color="textSecondary" gutterBottom>
                         Název
                     </Typography>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="h5" component="h2" className={this.props.classes.measurementName}>
                         {name}
                     </Typography>
                     <div className={this.props.classes.row}>
@@ -98,8 +124,8 @@ class Manager extends Component {
                         </Typography>
                     </div>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Zobrazit výsledky</Button>
+                <CardActions className={this.props.classes.cardActions}>
+                    <Button size="small" color="secondary" onClick={() => this.openDashboard(id)}>Zobrazit výsledky</Button>
                 </CardActions>
             </Card>
         </Grid>
@@ -124,12 +150,11 @@ class Manager extends Component {
                 <Grid container spacing={16} className={classes.mainGrid}>
                     {this.state.measurements.map(this.renderMeasurement)}
                 </Grid>
-                <Link to={'/dashboard/1'} className={classes.addButtonLink}>
-                    <Fab color="primary" aria-label="New measurement">
-                        <Icon className={classes.addIcon}>add</Icon>
-                    </Fab>
-                </Link>
-            </div >
+                <Fab color="primary" aria-label="New measurement" onClick={this.openNameDialog.bind(this)} className={classes.addButton}>
+                    <Icon className={classes.addIcon}>add</Icon>
+                </Fab>
+                <MeasurementNameDialog open={this.state.openDialog} handleCancel={this.handleCancel.bind(this)} handleCreate={this.handleCreate.bind(this)} />
+            </div>
         );
     }
 }
