@@ -29,7 +29,6 @@ const styles = theme => ({
 });
 
 const CanSatAppBar = ({ classes, signal, children }) => {
-    console.log(children);
     return (
         <AppBar position="relative" className={classes.appBar}>
             <Toolbar>

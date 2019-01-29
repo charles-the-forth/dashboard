@@ -44,4 +44,3 @@ const transformToDataObject = array => {
     }
     return result;
 };
-

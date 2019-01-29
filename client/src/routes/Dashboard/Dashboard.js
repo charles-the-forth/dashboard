@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import openSocket from 'socket.io-client'
 import TemperatureChart from '../../components/TemperatureChart/TemperatureChart';
-import { append, pathOr } from 'ramda';
+import { append, pathOr, propOr } from 'ramda';
 import PressureChart from '../../components/PressureChart/PressureChart';
 import SpeedChart from '../../components/SpeedChart/SpeedChart';
 import HeightChart from '../../components/HeightChart/HeightChart';
@@ -11,6 +11,7 @@ import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   logo: {
@@ -20,6 +21,9 @@ const styles = theme => ({
   appBar: {
     backgroundColor: 'white',
     color: 'black'
+  },
+  link: {
+    textDecoration: 'none'
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -68,15 +72,16 @@ class Dashboard extends Component {
         pressure: append(pressure, this.state.pressure),
         speed: append(speed, this.state.speed),
         height: append(height, this.state.height),
-        lat: parseFloat(lat.value),
-        lng: parseFloat(lng.value)
+        lat: parseFloat(propOr(0, 'value', lat)),
+        lng: parseFloat(propOr(0, 'value', lng))
       }));
 
   }
 
+  redirect = (pathname) => () => this.props.history.push({ pathname });
+
   render() {
     const { classes, location } = this.props;
-    console.log(this.props);
     return (
       <div>
         <CanSatAppBar signal={80}>
@@ -90,28 +95,39 @@ class Dashboard extends Component {
         </CanSatAppBar>
         <Grid container spacing={16} className={classes.mainGrid}>
           <Grid item lg={6}>
-            <Paper className={classes.paper}>
-              <TemperatureChart data={this.state.temperature} config={this.state.config.temperature} />
-            </Paper>
+            <Link to='/dashboard/1/temperature' className={classes.link}>
+              <Paper className={classes.paper}>
+                <TemperatureChart data={this.state.temperature} config={this.state.config.temperature} />
+              </Paper>
+            </Link>
           </Grid>
           <Grid item lg={6}>
-            <Paper className={classes.paper}>
-              <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
-            </Paper>
+            <Link to='/dashboard/1/pressure' className={classes.link}>
+              <Paper className={classes.paper}>
+                <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
+              </Paper>
+            </Link>
           </Grid>
           <Grid item lg={3}>
-            <Paper className={classes.paper}>
-              <SpeedChart data={this.state.speed} config={this.state.config.speed} />
-            </Paper>
+            <Link to='/dashboard/1/speed' className={classes.link}>
+              <Paper className={classes.paper}>
+                <SpeedChart data={this.state.speed} config={this.state.config.speed} />
+              </Paper>
+            </Link>
           </Grid>
           <Grid item lg={3}>
-            <Paper className={classes.paper}>
-              <HeightChart data={this.state.height} config={this.state.config.height} /></Paper>
+            <Link to='/dashboard/1/height' className={classes.link}>
+              <Paper className={classes.paper}>
+                <HeightChart data={this.state.height} config={this.state.config.height} />
+              </Paper>
+            </Link>
           </Grid>
           <Grid item lg={6}>
-            <Paper className={classes.paper}>
-              <MapTile lat={this.state.lat} lng={this.state.lng} style={{ height: '380px' }} />
-            </Paper>
+            <Link to='/dashboard/1/map' className={classes.link}>
+              <Paper className={classes.paper}>
+                <MapTile lat={this.state.lat} lng={this.state.lng} style={{ height: '380px' }} />
+              </Paper>
+            </Link>
           </Grid>
         </Grid>
       </div >

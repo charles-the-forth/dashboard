@@ -45,6 +45,6 @@ export default class MapTile extends Component {
         });
       }
     }
-    return <div ref="map" style={{height: '355px', width: '860px'}}/>;
+    return <div ref="map" style={{height: '355px', width: '860px', cursor: 'pointer'}}/>;
   }
 }
