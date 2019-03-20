@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import openSocket from 'socket.io-client'
 import TemperatureChart from '../../components/TemperatureChart/TemperatureChart';
+import PressureChart from '../../components/PressureChart/PressureChart';
 import { append, pathOr, tail } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   logo: {
@@ -44,14 +44,11 @@ class Dashboard extends Component {
       humidity: [],
       config: {
         temperature: {
-          maxShowedValues: 40
+          maxShowedValues: 20
         },
         pressure: {
-          maxShowedValues: 40
-        },
-        height: {
           maxShowedValues: 20
-        }
+        },
       },
       lat: 0,
       lng: 0,
@@ -92,62 +89,22 @@ class Dashboard extends Component {
           </Typography>
         </CanSatAppBar>
         <Grid container spacing={16} className={classes.mainGrid}>
-          <Grid item lg={6}>
-            <Link to='/dashboard/1/temperature' className={classes.link}>
-              <Paper className={classes.paper}>
-                <TemperatureChart
-                  data={this.state.temperature}
-                  config={this.state.config.temperature} />
-              </Paper>
-            </Link>
+          <Grid item lg={4}>
+            <Paper className={classes.paper}>
+              <TemperatureChart
+                data={this.state.temperature}
+                config={this.state.config.temperature} />
+            </Paper>
+          </Grid>
+          <Grid item lg={4}>
+            <Paper className={classes.paper}>
+              <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
+            </Paper>
           </Grid>
         </Grid>
       </div >
     );
   }
 }
-
-/*
-<Grid item lg={6}>
-            <Link to='/dashboard/1/temperature' className={classes.link}>
-              <Paper className={classes.paper}>
-                <TemperatureChart
-                  data={
-                    [
-                      {
-                        name: 'BME interní',
-                        data: this.state.temperatureCanSat
-                      },
-                      {
-                        name: 'BME externí',
-                        data: this.state.temperatureExternal
-                      },
-                      {
-                        name: 'MPU externí',
-                        data: this.state.temperatureMPU
-                      },
-                    ]
-                  }
-                  config={this.state.config.temperature} />
-              </Paper>
-            </Link>
-          </Grid>
-
-
-<Grid item lg={6}>
-            <Link to='/dashboard/1/pressure' className={classes.link}>
-              <Paper className={classes.paper}>
-                <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
-              </Paper>
-            </Link>
-          </Grid>
-          <Grid item lg={3}>
-            <Link to='/dashboard/1/height' className={classes.link}>
-              <Paper className={classes.paper}>
-                <HeightChart data={this.state.height} config={this.state.config.height} />
-              </Paper>
-            </Link>
-          </Grid>
-*/
 
 export default withStyles(styles)(Dashboard);
