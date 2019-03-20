@@ -11,26 +11,39 @@ const serverPort = 5000;
 
 io.on('connection', (socket: Socket) => {
 
-    const port = new SerialPort('/dev/ttyACM0', {
+    /*const port = new SerialPort('/dev/ttyACM0', {
         baudRate: 57600,
         parser: new SerialPort.parsers.Readline('\n')
-    });
+    });*/
 
-    port.on('open', () => {
-        let buffer = '';
-        port.on('data', input => {
-            buffer += input.toString();
-            if (buffer.indexOf('\n') !== -1) {
-                const data = buffer.substring(0, buffer.indexOf('\n'));
-                buffer = buffer.substring(buffer.indexOf('\n') + 1);
+    let index = 0;
 
-                io.sockets.emit('data updated', transformToDataObject(data.split(/[=;]/)));
-            }
+    setInterval(() => {
+        io.sockets.emit('data updated', {
+            temperature: {
+                time: index,
+                temperatureExternal: getRandomInt(30),
+                temperatureCanSat: getRandomInt(40),
+                temperatureMPU: getRandomInt(25),
+            },
+            pressure: {
+                time: index,
+                pressureExternal: getRandomInt(1000),
+                pressureCanSat: getRandomInt(1000)
+            },
+            humidity: {
+                time: index,
+                humidityExternal: getRandomInt(50),
+                humidityCanSat: getRandomInt(40)
+            },
         });
-    });
+        index++;
+    }, 1000);
 });
 
 server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
+
+const getRandomInt = max => Math.floor(Math.random() * Math.floor(max));  
 
 const transformToDataObject = array => {
     const result = {};

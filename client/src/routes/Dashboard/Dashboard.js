@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import openSocket from 'socket.io-client'
 import TemperatureChart from '../../components/TemperatureChart/TemperatureChart';
-import { append, pathOr, propOr } from 'ramda';
-import PressureChart from '../../components/PressureChart/PressureChart';
-import SpeedChart from '../../components/SpeedChart/SpeedChart';
-import HeightChart from '../../components/HeightChart/HeightChart';
-import MapTile from '../../components/MapTile/MapTile';
+import { append, pathOr, tail } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
@@ -45,17 +41,13 @@ class Dashboard extends Component {
     this.state = {
       temperature: [],
       pressure: [],
-      speed: [],
-      height: [],
+      humidity: [],
       config: {
         temperature: {
           maxShowedValues: 40
         },
         pressure: {
           maxShowedValues: 40
-        },
-        speed: {
-          maxShowedValues: 20
         },
         height: {
           maxShowedValues: 20
@@ -66,16 +58,22 @@ class Dashboard extends Component {
       socket: openSocket('http://localhost:5000', { transports: ['websocket'] })
     };
 
-    this.state.socket.on('data updated', ({ temperature, pressure, speed, height, lat, lng }) =>
+    this.state.socket.on('data updated', ({ temperature, pressure, humidity }) => {
       this.setState({
         temperature: append(temperature, this.state.temperature),
         pressure: append(pressure, this.state.pressure),
-        speed: append(speed, this.state.speed),
-        height: append(height, this.state.height),
-        lat: parseFloat(propOr(0, 'value', lat)),
-        lng: parseFloat(propOr(0, 'value', lng))
-      }));
-
+        humidity: append(humidity, this.state.humidity),
+      });
+      if (this.state.temperature.length > this.state.config.temperature.maxShowedValues) {
+        this.setState({
+          temperature: tail(this.state.temperature),
+          pressure: tail(this.state.pressure),
+          humidity: tail(this.state.humidity)
+        });
+      }
+      console.log(this.state);
+    });
+      
   }
 
   redirect = (pathname) => () => this.props.history.push({ pathname });
@@ -97,21 +95,49 @@ class Dashboard extends Component {
           <Grid item lg={6}>
             <Link to='/dashboard/1/temperature' className={classes.link}>
               <Paper className={classes.paper}>
-                <TemperatureChart data={this.state.temperature} config={this.state.config.temperature} />
+                <TemperatureChart
+                  data={this.state.temperature}
+                  config={this.state.config.temperature} />
               </Paper>
             </Link>
           </Grid>
-          <Grid item lg={6}>
+        </Grid>
+      </div >
+    );
+  }
+}
+
+/*
+<Grid item lg={6}>
+            <Link to='/dashboard/1/temperature' className={classes.link}>
+              <Paper className={classes.paper}>
+                <TemperatureChart
+                  data={
+                    [
+                      {
+                        name: 'BME interní',
+                        data: this.state.temperatureCanSat
+                      },
+                      {
+                        name: 'BME externí',
+                        data: this.state.temperatureExternal
+                      },
+                      {
+                        name: 'MPU externí',
+                        data: this.state.temperatureMPU
+                      },
+                    ]
+                  }
+                  config={this.state.config.temperature} />
+              </Paper>
+            </Link>
+          </Grid>
+
+
+<Grid item lg={6}>
             <Link to='/dashboard/1/pressure' className={classes.link}>
               <Paper className={classes.paper}>
                 <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
-              </Paper>
-            </Link>
-          </Grid>
-          <Grid item lg={3}>
-            <Link to='/dashboard/1/speed' className={classes.link}>
-              <Paper className={classes.paper}>
-                <SpeedChart data={this.state.speed} config={this.state.config.speed} />
               </Paper>
             </Link>
           </Grid>
@@ -122,17 +148,6 @@ class Dashboard extends Component {
               </Paper>
             </Link>
           </Grid>
-          <Grid item lg={6}>
-            <Link to='/dashboard/1/map' className={classes.link}>
-              <Paper className={classes.paper}>
-                <MapTile lat={this.state.lat} lng={this.state.lng} style={{ height: '380px' }} />
-              </Paper>
-            </Link>
-          </Grid>
-        </Grid>
-      </div >
-    );
-  }
-}
+*/
 
 export default withStyles(styles)(Dashboard);
