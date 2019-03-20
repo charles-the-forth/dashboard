@@ -24,7 +24,8 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'flex-end',
         marginTop: '10px',
-        width: '212px'
+        width: '212px',
+        opacity: 0
     }
 });
 

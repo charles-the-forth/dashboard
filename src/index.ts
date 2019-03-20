@@ -45,6 +45,12 @@ io.on('connection', (socket: Socket) => {
                 x: getRandomInt(10),
                 y: getRandomInt(10),
                 z: getRandomInt(10),
+            },
+            rotation: {
+                time: index,
+                x: getRandomInt(10),
+                y: getRandomInt(10),
+                z: getRandomInt(10),
             }
         });
         index++;
