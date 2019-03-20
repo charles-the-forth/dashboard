@@ -36,6 +36,10 @@ io.on('connection', (socket: Socket) => {
                 humidityExternal: getRandomInt(50),
                 humidityCanSat: getRandomInt(40)
             },
+            lightIntensity: {
+                time: index,
+                value: getRandomInt(400)
+            }
         });
         index++;
     }, 1000);
