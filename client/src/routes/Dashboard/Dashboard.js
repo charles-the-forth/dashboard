@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import openSocket from 'socket.io-client'
 import TemperatureChart from '../../components/TemperatureChart/TemperatureChart';
 import PressureChart from '../../components/PressureChart/PressureChart';
+import HumidityChart from '../../components/HumidityChart/HumidityChart';
 import { append, pathOr, tail } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -47,6 +48,9 @@ class Dashboard extends Component {
           maxShowedValues: 20
         },
         pressure: {
+          maxShowedValues: 20
+        },
+        humidity: {
           maxShowedValues: 20
         },
       },
@@ -99,6 +103,11 @@ class Dashboard extends Component {
           <Grid item lg={4}>
             <Paper className={classes.paper}>
               <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
+            </Paper>
+          </Grid>
+          <Grid item lg={4}>
+            <Paper className={classes.paper}>
+              <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
             </Paper>
           </Grid>
         </Grid>
