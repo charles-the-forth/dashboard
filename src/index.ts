@@ -39,6 +39,12 @@ io.on('connection', (socket: Socket) => {
             lightIntensity: {
                 time: index,
                 value: getRandomInt(400)
+            },
+            acceleration: {
+                time: index,
+                x: getRandomInt(10),
+                y: getRandomInt(10),
+                z: getRandomInt(10),
             }
         });
         index++;

@@ -4,6 +4,7 @@ import TemperatureChart from '../../components/TemperatureChart/TemperatureChart
 import PressureChart from '../../components/PressureChart/PressureChart';
 import HumidityChart from '../../components/HumidityChart/HumidityChart';
 import LightIntensityChart from '../../components/LightIntensityChart/LightIntensityChart';
+import AccelerationChart from '../../components/AccelerationChart/AccelerationChart';
 import { append, pathOr, tail } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -45,6 +46,7 @@ class Dashboard extends Component {
       pressure: [],
       humidity: [],
       lightIntensity: [],
+      acceleration: [],
       config: {
         temperature: {
           maxShowedValues: 20
@@ -58,25 +60,30 @@ class Dashboard extends Component {
         lightIntensity: {
           maxShowedValues: 20
         },
+        acceleration: {
+          maxShowedValues: 20
+        }
       },
       lat: 0,
       lng: 0,
       socket: openSocket('http://localhost:5000', { transports: ['websocket'] })
     };
 
-    this.state.socket.on('data updated', ({ temperature, pressure, humidity, lightIntensity }) => {
+    this.state.socket.on('data updated', ({ temperature, pressure, humidity, lightIntensity, acceleration }) => {
       this.setState({
         temperature: append(temperature, this.state.temperature),
         pressure: append(pressure, this.state.pressure),
         humidity: append(humidity, this.state.humidity),
         lightIntensity: append(lightIntensity, this.state.lightIntensity),
+        acceleration: append(acceleration, this.state.acceleration),
       });
       if (this.state.temperature.length > this.state.config.temperature.maxShowedValues) {
         this.setState({
           temperature: tail(this.state.temperature),
           pressure: tail(this.state.pressure),
           humidity: tail(this.state.humidity),
-          lightIntensity: tail(this.state.lightIntensity)
+          lightIntensity: tail(this.state.lightIntensity),
+          acceleration: tail(this.state.acceleration)
         });
       }
     });
@@ -119,6 +126,11 @@ class Dashboard extends Component {
           <Grid item lg={4}>
             <Paper className={classes.paper}>
               <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
+            </Paper>
+          </Grid>
+          <Grid item lg={4}>
+            <Paper className={classes.paper}>
+              <AccelerationChart data={this.state.acceleration} config={this.state.config.acceleration} />
             </Paper>
           </Grid>
         </Grid>
