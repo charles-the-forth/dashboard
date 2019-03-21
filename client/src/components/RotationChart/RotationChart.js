@@ -4,7 +4,7 @@ import { takeLast } from 'ramda';
 
 const RotationChart = ({ config, data }) => (
     <div className="chart-container">
-        <h2>Náklon [°]</h2>
+        <h2>Změna náklonu [°]</h2>
         <LineChart width={450} height={280} data={takeLast(config.maxShowedValues, data)}
             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />

@@ -10,66 +10,66 @@ const io = new SocketIO(server);
 const serverPort = 5000;
 
 io.on('connection', (socket: Socket) => {
-
-    /*const port = new SerialPort('/dev/ttyACM0', {
+    const port = new SerialPort('/dev/ttyACM0', {
         baudRate: 57600,
         parser: new SerialPort.parsers.Readline('\n')
-    });*/
+    });
 
-    let index = 0;
-
-    setInterval(() => {
-        io.sockets.emit('data updated', {
-            temperature: {
-                time: index,
-                temperatureExternal: getRandomInt(30),
-                temperatureCanSat: getRandomInt(40),
-                temperatureMPU: getRandomInt(25),
-            },
-            pressure: {
-                time: index,
-                pressureExternal: getRandomInt(1000),
-                pressureCanSat: getRandomInt(1000)
-            },
-            humidity: {
-                time: index,
-                humidityExternal: getRandomInt(50),
-                humidityCanSat: getRandomInt(40)
-            },
-            lightIntensity: {
-                time: index,
-                value: getRandomInt(400)
-            },
-            acceleration: {
-                time: index,
-                x: getRandomInt(10),
-                y: getRandomInt(10),
-                z: getRandomInt(10),
-            },
-            rotation: {
-                time: index,
-                x: getRandomInt(10),
-                y: getRandomInt(10),
-                z: getRandomInt(10),
+    port.on('open', () => {
+        let index = 0;
+        let buffer = '';
+        port.on('data', input => {
+            if (index > 100) {
+                index = 0;
             }
+            buffer += input.toString();
+            if (buffer.indexOf('\n') !== -1) {
+                const data = buffer.substring(0, buffer.indexOf('\n'));
+                buffer = buffer.substring(buffer.indexOf('\n') + 1);
+
+                io.sockets.emit('data updated', transformToDataObject(data.split(/[=;]/), index));
+            }
+            index++;
         });
-        index++;
-    }, 1000);
+    });
 });
 
 server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
 
-const getRandomInt = max => Math.floor(Math.random() * Math.floor(max));  
-
-const transformToDataObject = array => {
-    const result = {};
-    const date = new Date();
-
-    for (let i = 0; i < array.length; i += 2) {
-        result[array[i]] = {
-            time: `${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`,
-            value: parseFloat(array[i + 1])
-        };
-    }
+const transformToDataObject = (array, index, rotation) => {
+    const result = {
+        temperature: {
+            time: index,
+            temperatureExternal: parseFloat(array[1]),
+            temperatureCanSat: parseFloat(array[0]),
+            temperatureMPU: parseFloat(array[2]),
+        },
+        pressure: {
+            time: index,
+            pressureExternal: parseFloat(array[4]),
+            pressureCanSat: parseFloat(array[3])
+        },
+        humidity: {
+            time: index,
+            humidityExternal: parseFloat(array[6]),
+            humidityCanSat: parseFloat(array[5])
+        },
+        lightIntensity: {
+            time: index,
+            value: parseFloat(array[13])
+        },
+        acceleration: {
+            time: index,
+            x: parseFloat(array[7]),
+            y: parseFloat(array[8]),
+            z: parseFloat(array[9]),
+        },
+        rotation: {
+            time: index,
+            x: parseFloat(array[10]),
+            y: parseFloat(array[11]),
+            z: parseFloat(array[12]),
+        }
+    };
     return result;
 };
