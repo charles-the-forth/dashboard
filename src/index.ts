@@ -74,7 +74,7 @@ const transformToDataObject = (array, index) => {
         },
         pressure: {
             time: index,
-            temperature: parseFloat(array[2])
+            pressure: parseFloat(array[2])
         },
         humidity: {
             time: index,

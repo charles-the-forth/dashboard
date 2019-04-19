@@ -55,10 +55,10 @@ class Dashboard extends Component {
       altitude: [],
       config: {
         temperature: {
-          maxShowedValues: 20
+          maxShowedValues: 25
         },
         pressure: {
-          maxShowedValues: 20
+          maxShowedValues: 25
         },
         humidity: {
           maxShowedValues: 20
@@ -78,7 +78,7 @@ class Dashboard extends Component {
     };
 
     this.state.socket.on('data updated', ({
-      messageId, numberOfSatellites, lat, lng, day, month, year, hour, minute, second
+      messageId, numberOfSatellites, lat, lng, day, month, year, hour, minute, second, temperature, pressure, humidity, lightIntensity, altitude
      }) => {
       this.setState({
         messageId, numberOfSatellites,
@@ -87,7 +87,12 @@ class Dashboard extends Component {
           lng
         },
         day, month, year,
-        hour, minute, second
+        hour, minute, second,
+        temperature: append(temperature, this.state.temperature),
+        pressure: append(pressure, this.state.pressure),
+        humidity: append(humidity, this.state.humidity),
+        lightIntensity: append(lightIntensity, this.state.lightIntensity),
+        altitude: append(altitude, this.state.altitude)
       });
       console.log(this.state);
     });
