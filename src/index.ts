@@ -26,7 +26,7 @@ io.on('connection', (socket: Socket) => {
     standard_input.on('data', data => {
         const numberInput = Number(data);
         if (numberInput !== NaN && numberInput <= portNames.length) {
-            connectWithPort(portNames[numberInput - 1]);
+            connectToPort(portNames[numberInput - 1]);
         } else {
             console.log('Exiting program due to wrong input.');
             process.exit();
@@ -35,7 +35,7 @@ io.on('connection', (socket: Socket) => {
 
 });
 
-const connectWithPort = portName => {
+const connectToPort = portName => {
     const port = new SerialPort(portName, {
         baudRate: 57600,
         parser: new SerialPort.parsers.Readline('\n')
@@ -53,7 +53,7 @@ const connectWithPort = portName => {
                 const data = buffer.substring(buffer.indexOf('START') + 6, buffer.indexOf('END') - 1);
                 buffer = buffer.substring(buffer.indexOf('\n') + 1);
 
-                console.log(data);
+                io.sockets.emit('data updated', transformToDataObject(data.split(/[=;]/), index));
             }
             index++;
         });
@@ -61,3 +61,42 @@ const connectWithPort = portName => {
 };
 
 server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
+
+const transformToDataObject = (array, index) => {
+    const result = {
+        messageId: array[0],
+        temperature: {
+            time: index,
+            temperature: parseFloat(array[1])
+        },
+        pressure: {
+            time: index,
+            temperature: parseFloat(array[2])
+        },
+        humidity: {
+            time: index,
+            humidity: parseFloat(array[3])
+        },
+        lightIntensity: {
+            time: index,
+            lightIntensity: parseFloat(array[4])
+        },
+        altitude: {
+            time: index,
+            altitude: parseFloat(array[5]),
+        },
+        numberOfSatellites: parseInt(array[6]),
+        year: parseInt(array[7]),
+        month: parseInt(array[8]),
+        day: parseInt(array[9]),
+        hour: parseInt(array[10]),
+        minute: parseInt(array[11]),
+        second: parseInt(array[12]),
+        lat: parseGPS(array[13], array[15]),
+        lng: parseGPS(array[14], array[16]),
+    };
+
+    return result;
+}
+
+const parseGPS = (latInt, lat) => Math.floor(parseInt(latInt) / 100) + ((parseInt(latInt) % 100 + parseFloat('0.' + lat)) / 60);

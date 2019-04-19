@@ -75,25 +75,8 @@ class Dashboard extends Component {
       socket: openSocket('http://localhost:5000', { transports: ['websocket'] })
     };
 
-    this.state.socket.on('data updated', ({ temperature, pressure, humidity, lightIntensity, acceleration, rotation }) => {
-      this.setState({
-        temperature: append(temperature, this.state.temperature),
-        pressure: append(pressure, this.state.pressure),
-        humidity: append(humidity, this.state.humidity),
-        lightIntensity: append(lightIntensity, this.state.lightIntensity),
-        acceleration: append(acceleration, this.state.acceleration),
-        rotation: append(rotation, this.state.rotation),
-      });
-      if (this.state.temperature.length > this.state.config.temperature.maxShowedValues) {
-        this.setState({
-          temperature: tail(this.state.temperature),
-          pressure: tail(this.state.pressure),
-          humidity: tail(this.state.humidity),
-          lightIntensity: tail(this.state.lightIntensity),
-          acceleration: tail(this.state.acceleration),
-          rotation: tail(this.state.rotation)
-        });
-      }
+    this.state.socket.on('data updated', data => {
+      console.log(data);
     });
   }
 
