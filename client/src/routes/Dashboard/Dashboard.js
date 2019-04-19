@@ -4,6 +4,7 @@ import TemperatureChart from '../../components/TemperatureChart/TemperatureChart
 import PressureChart from '../../components/PressureChart/PressureChart';
 import HumidityChart from '../../components/HumidityChart/HumidityChart';
 import LightIntensityChart from '../../components/LightIntensityChart/LightIntensityChart';
+import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
 import MapTile from '../../components/MapTile/MapTile';
 import InfoTile from '../../components/InfoTile/InfoTile';
 import { append, pathOr, tail } from 'ramda';
@@ -51,8 +52,7 @@ class Dashboard extends Component {
       pressure: [],
       humidity: [],
       lightIntensity: [],
-      acceleration: [],
-      rotation: [],
+      altitude: [],
       config: {
         temperature: {
           maxShowedValues: 20
@@ -66,10 +66,7 @@ class Dashboard extends Component {
         lightIntensity: {
           maxShowedValues: 20
         },
-        acceleration: {
-          maxShowedValues: 20
-        },
-        rotation: {
+        altitude: {
           maxShowedValues: 20
         }
       },
@@ -98,10 +95,7 @@ class Dashboard extends Component {
         });
       }
     });
-
   }
-
-  redirect = (pathname) => () => this.props.history.push({ pathname });
 
   render() {
     const { classes, location } = this.props;
@@ -138,7 +132,9 @@ class Dashboard extends Component {
             </Paper>
           </Grid>
           <Grid item lg={3}>
-            <Paper className={classes.paper}></Paper>
+            <Paper className={classes.paper}>
+              <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
+            </Paper>
           </Grid>
           <Grid item lg={3}>
             <Paper className={classes.paper}>
