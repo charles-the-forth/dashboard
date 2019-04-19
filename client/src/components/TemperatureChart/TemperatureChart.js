@@ -3,10 +3,10 @@ import { AreaChart, Area, YAxis, CartesianGrid, Legend } from 'recharts';
 import { takeLast } from 'ramda';
 import './TemperatureChart.css';
 
-const TemperatureChart = ({ config, data, redirect }) => (
+const TemperatureChart = ({ config, data }) => (
     <div className="chart-container">
         <h2>Teplota [°C]</h2>
-        <AreaChart width={450} height={360} data={takeLast(config.maxShowedValues, data)}
+        <AreaChart width={450} height={254} data={takeLast(config.maxShowedValues, data)}
             margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="chart">
             <CartesianGrid strokeDasharray="3 3" />
             <YAxis />

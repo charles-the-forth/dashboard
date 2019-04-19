@@ -5,6 +5,7 @@ import PressureChart from '../../components/PressureChart/PressureChart';
 import HumidityChart from '../../components/HumidityChart/HumidityChart';
 import LightIntensityChart from '../../components/LightIntensityChart/LightIntensityChart';
 import MapTile from '../../components/MapTile/MapTile';
+import InfoTile from '../../components/InfoTile/InfoTile';
 import { append, pathOr, tail } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -32,8 +33,12 @@ const styles = theme => ({
     aligContent: 'center',
   },
   mainGrid: {
-    margin: '16px',
+    margin: '12px',
     width: 'calc(100% - 32px)'
+  },
+  infoTileGrid: {
+    display: 'grid',
+    gridRowGap: '16px'
   }
 });
 
@@ -93,7 +98,7 @@ class Dashboard extends Component {
         });
       }
     });
-      
+
   }
 
   redirect = (pathname) => () => this.props.history.push({ pathname });
@@ -117,16 +122,22 @@ class Dashboard extends Component {
               <MapTile center={{
                 lat: 50.0310364,
                 lng: 15.7936385
-              }}/>
+              }} />
             </Paper>
           </Grid>
-          <Grid item lg={4} spacing={16}>
-            <Paper className={classes.paper}></Paper>
-            <Paper className={classes.paper}></Paper>
-            <Paper className={classes.paper}></Paper>
-            <Paper className={classes.paper}></Paper>
+          <Grid item lg={4}>
+            <Paper className={classes.paper}>
+              <TemperatureChart
+                data={this.state.temperature}
+                config={this.state.config.temperature} />
+            </Paper>
           </Grid>
           <Grid item lg={4}>
+            <Paper className={classes.paper}>
+              <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
+            </Paper>
+          </Grid>
+          <Grid item lg={3}>
             <Paper className={classes.paper}></Paper>
           </Grid>
           <Grid item lg={3}>
@@ -136,21 +147,15 @@ class Dashboard extends Component {
           </Grid>
           <Grid item lg={3}>
             <Paper className={classes.paper}>
-              <TemperatureChart
-                data={this.state.temperature}
-                config={this.state.config.temperature} />
-            </Paper>
-          </Grid>
-          <Grid item lg={3}>
-            <Paper className={classes.paper}>
-              <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
-            </Paper>
-          </Grid>
-          <Grid item lg={3}>
-            <Paper className={classes.paper}>
               <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
             </Paper>
-          </Grid>          
+          </Grid>
+          <Grid item lg={3} className={classes.infoTileGrid}>
+            <InfoTile icon={'message'} title='Message ID' text='123' />
+            <InfoTile icon={'satellite'} title='Number of satellites' text='5' />
+            <InfoTile icon={'calendar_today'} title='Date' text='10 April 2019' />
+            <InfoTile icon={'access_time'} title='Time' text='19:44:10' />
+          </Grid>
         </Grid>
       </div >
     );
