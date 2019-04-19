@@ -8,31 +8,33 @@ const app = express();
 const server = new Server(app);
 const io = new SocketIO(server);
 const serverPort = 5000;
+let running = false;
 
 const standard_input = process.stdin;
 standard_input.setEncoding('utf-8');
 
 io.on('connection', (socket: Socket) => {
-    console.log("Enter port that you want to use:");
-    const portNames = [];
-
-    SerialPort.list((err, ports) =>
-        ports.forEach((port, index) => {
-            portNames.push(port.comName);
-            console.log((index + 1) + ' - ' + port.comName);
-        })
-    );
-
-    standard_input.on('data', data => {
-        const numberInput = Number(data);
-        if (numberInput !== NaN && numberInput <= portNames.length) {
-            connectToPort(portNames[numberInput - 1]);
-        } else {
-            console.log('Exiting program due to wrong input.');
-            process.exit();
-        }
-    });
-
+    if (!running) {
+        console.log("Enter port that you want to use:");
+        const portNames = [];
+    
+        SerialPort.list((err, ports) =>
+            ports.forEach((port, index) => {
+                portNames.push(port.comName);
+                console.log((index + 1) + ' - ' + port.comName);
+            })
+        );
+    
+        standard_input.on('data', data => {
+            const numberInput = Number(data);
+            if (numberInput !== NaN && numberInput <= portNames.length) {
+                connectToPort(portNames[numberInput - 1]);
+            } else {
+                console.log('Exiting program due to wrong input.');
+                process.exit();
+            }
+        });
+    }
 });
 
 const connectToPort = portName => {
@@ -42,6 +44,7 @@ const connectToPort = portName => {
     });
 
     port.on('open', () => {
+        running = true;
         let index = 0;
         let buffer = '';
         port.on('data', input => {

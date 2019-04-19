@@ -5,7 +5,7 @@ const MapTile = ({ center }) => (
   <div style={{ height: '320px', width: '100%' }}>
     <GoogleMapReact
       bootstrapURLKeys={{ key: 'AIzaSyDL619YAcM88PzvrklYZPl6BVOJHPH83TQ' }}
-      defaultCenter={center}
+      center={center}
       defaultZoom={15}>
     </GoogleMapReact>
   </div>
