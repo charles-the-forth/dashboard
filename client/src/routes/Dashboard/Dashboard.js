@@ -4,8 +4,7 @@ import TemperatureChart from '../../components/TemperatureChart/TemperatureChart
 import PressureChart from '../../components/PressureChart/PressureChart';
 import HumidityChart from '../../components/HumidityChart/HumidityChart';
 import LightIntensityChart from '../../components/LightIntensityChart/LightIntensityChart';
-import AccelerationChart from '../../components/AccelerationChart/AccelerationChart';
-import RotationChart from '../../components/RotationChart/RotationChart';
+import MapTile from '../../components/MapTile/MapTile';
 import { append, pathOr, tail } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -115,36 +114,43 @@ class Dashboard extends Component {
         <Grid container spacing={16} className={classes.mainGrid}>
           <Grid item lg={4}>
             <Paper className={classes.paper}>
+              <MapTile center={{
+                lat: 50.0310364,
+                lng: 15.7936385
+              }}/>
+            </Paper>
+          </Grid>
+          <Grid item lg={4} spacing={16}>
+            <Paper className={classes.paper}></Paper>
+            <Paper className={classes.paper}></Paper>
+            <Paper className={classes.paper}></Paper>
+            <Paper className={classes.paper}></Paper>
+          </Grid>
+          <Grid item lg={4}>
+            <Paper className={classes.paper}></Paper>
+          </Grid>
+          <Grid item lg={3}>
+            <Paper className={classes.paper}>
+              <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
+            </Paper>
+          </Grid>
+          <Grid item lg={3}>
+            <Paper className={classes.paper}>
               <TemperatureChart
                 data={this.state.temperature}
                 config={this.state.config.temperature} />
             </Paper>
           </Grid>
-          <Grid item lg={4}>
+          <Grid item lg={3}>
             <Paper className={classes.paper}>
               <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
             </Paper>
           </Grid>
-          <Grid item lg={4}>
+          <Grid item lg={3}>
             <Paper className={classes.paper}>
               <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
             </Paper>
-          </Grid>
-          <Grid item lg={4}>
-            <Paper className={classes.paper}>
-              <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
-            </Paper>
-          </Grid>
-          <Grid item lg={4}>
-            <Paper className={classes.paper}>
-              <AccelerationChart data={this.state.acceleration} config={this.state.config.acceleration} />
-            </Paper>
-          </Grid>
-          <Grid item lg={4}>
-            <Paper className={classes.paper}>
-              <RotationChart data={this.state.rotation} config={this.state.config.rotation} />
-            </Paper>
-          </Grid>
+          </Grid>          
         </Grid>
       </div >
     );
