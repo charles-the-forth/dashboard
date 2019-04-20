@@ -73,8 +73,8 @@ class Dashboard extends Component {
         infoTile: {}
       },
       center: {
-        lat: 0,
-        lng: 0,
+        lat: 50.03718,
+        lng: 15.779902
       },
       socket: openSocket('http://localhost:5000', { transports: ['websocket'] })
     };
@@ -85,8 +85,7 @@ class Dashboard extends Component {
       this.setState({
         messageId, numberOfSatellites,
         center: {
-          lat,
-          lng
+          lat, lng
         },
         day, month, year,
         hour, minute, second,
