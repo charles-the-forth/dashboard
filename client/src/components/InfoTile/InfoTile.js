@@ -6,16 +6,19 @@ import Icon from '@material-ui/core/Icon';
 
 const styles = theme => ({
     paper: {
-        padding: theme.spacing.unit,
+        padding: '6px 8px',
         textAlign: 'left',
         color: theme.palette.text.secondary,
         justifyContent: 'left',
         aligContent: 'center',
-        maxHeight: `${76 - theme.spacing.unit * 2}px`
+        display: 'flex',
+        flexDirection: 'column'
     },
     row: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center'
     },
     title: {
         fontSize: '12px'

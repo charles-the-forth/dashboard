@@ -7,7 +7,7 @@ import LightIntensityChart from '../../components/LightIntensityChart/LightInten
 import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
 import MapTile from '../../components/MapTile/MapTile';
 import InfoTile from '../../components/InfoTile/InfoTile';
-import { append, pathOr, tail } from 'ramda';
+import { append, pathOr, assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
@@ -54,6 +54,7 @@ class Dashboard extends Component {
       lightIntensity: [],
       altitude: [],
       config: {
+        map: {},
         temperature: {
           maxShowedValues: 25
         },
@@ -68,7 +69,8 @@ class Dashboard extends Component {
         },
         altitude: {
           maxShowedValues: 20
-        }
+        },
+        infoTile: {}
       },
       center: {
         lat: 0,
@@ -98,6 +100,25 @@ class Dashboard extends Component {
     });
   }
 
+  updateDimensions() {
+    console.log('window.innerHeight');
+    const spacingAndStuffLikeThat = 184;
+    const titleHeight = 68;
+    this.setState(pipe(
+      assocPath(['config', 'map', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'temperature', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight),
+      assocPath(['config', 'pressure', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight),
+      assocPath(['config', 'humidity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight),
+      assocPath(['config', 'lightIntensity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight),
+      assocPath(['config', 'altitude', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight),
+    )(this.state));
+  }
+
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+
   render() {
     const { classes, location } = this.props;
     return (
@@ -114,7 +135,7 @@ class Dashboard extends Component {
         <Grid container spacing={16} className={classes.mainGrid}>
           <Grid item lg={4}>
             <Paper className={classes.paper}>
-              <MapTile center={this.state.center} />
+              <MapTile center={this.state.center} config={this.state.config.map} />
             </Paper>
           </Grid>
           <Grid item lg={4}>
