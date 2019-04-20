@@ -3,12 +3,21 @@ import * as SocketIO from 'socket.io';
 import { Server } from 'http';
 import { Socket } from 'net';
 import * as SerialPort from 'serialport';
+import * as admin from 'firebase-admin';
+const serviceAccount = require('../../../Downloads/cansatweb-1547364100927-firebase-adminsdk-b30cq-ad9f633c25.json');
 
 const app = express();
 const server = new Server(app);
 const io = new SocketIO(server);
 const serverPort = 5000;
 let running = false;
+
+const firebaseApp = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://cansatweb-1547364100927.firebaseio.com"
+});
+
+const db = admin.firestore();
 
 const standard_input = process.stdin;
 standard_input.setEncoding('utf-8');
@@ -56,7 +65,11 @@ const connectToPort = portName => {
                 const data = buffer.substring(buffer.indexOf('START') + 6, buffer.indexOf('END') - 1);
                 buffer = buffer.substring(buffer.indexOf('\n') + 1);
 
-                io.sockets.emit('data updated', transformToDataObject(data.split(/[=;]/), index));
+
+                const dataObj = transformToDataObject(data.split(/[=;]/), index);
+
+                db.collection('messages').add(dataObj);              
+                io.sockets.emit('data updated', dataObj);
             }
             index++;
         });
