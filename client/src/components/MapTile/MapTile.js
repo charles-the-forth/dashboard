@@ -3,7 +3,6 @@ import GoogleMapReact from 'google-map-react';
 import MapMarker from '../MapMarker/MapMarker';
 
 const MapTile = ({ center, config }) => {
-  console.log(center);
   return (
     <div style={{ height: config.height + 'px', width: '100%' }}>
       <GoogleMapReact

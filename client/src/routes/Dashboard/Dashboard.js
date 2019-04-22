@@ -6,6 +6,7 @@ import LightIntensityChart from '../../components/LightIntensityChart/LightInten
 import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
 import MapTile from '../../components/MapTile/MapTile';
 import InfoTile from '../../components/InfoTile/InfoTile';
+import Video from '../../components/Video/Video';
 import { pathOr, assocPath, pipe, reverse } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -59,6 +60,7 @@ class Dashboard extends Component {
       altitude: [],
       config: {
         map: {},
+        video: {},
         temperature: {
           maxShowedValues: 25
         },
@@ -132,6 +134,7 @@ class Dashboard extends Component {
     const titleHeight = 68;
     this.setState(pipe(
       assocPath(['config', 'map', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'video', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
       assocPath(['config', 'temperature', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'pressure', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'humidity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
@@ -161,7 +164,7 @@ class Dashboard extends Component {
         <Grid container spacing={16} className={classes.mainGrid}>
           <Grid item xs={12} sm={6} lg={4}>
             <Paper className={classes.paper}>
-              <h1>Video</h1>
+              <Video config={this.state.config.video} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
