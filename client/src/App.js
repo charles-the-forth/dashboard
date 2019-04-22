@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Dashboard from './routes/Dashboard/Dashboard';
 import { MuiThemeProvider } from '@material-ui/core';

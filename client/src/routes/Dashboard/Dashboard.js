@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import openSocket from 'socket.io-client'
 import TemperatureChart from '../../components/TemperatureChart/TemperatureChart';
 import PressureChart from '../../components/PressureChart/PressureChart';
 import HumidityChart from '../../components/HumidityChart/HumidityChart';
@@ -7,12 +6,14 @@ import LightIntensityChart from '../../components/LightIntensityChart/LightInten
 import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
 import MapTile from '../../components/MapTile/MapTile';
 import InfoTile from '../../components/InfoTile/InfoTile';
-import { append, pathOr, assocPath, pipe } from 'ramda';
+import { pathOr, assocPath, pipe, reverse } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import * as firebase from "firebase/app";
+import "firebase/firestore";
 
 const styles = theme => ({
   logo: {
@@ -76,31 +77,54 @@ class Dashboard extends Component {
         lat: 50.03718,
         lng: 15.779902
       },
-      socket: openSocket('http://localhost:5000', { transports: ['websocket'] })
     };
 
-    this.state.socket.on('data updated', ({
-      messageId, numberOfSatellites, lat, lng, day, month, year, hour, minute, second, temperature, pressure, humidity, lightIntensity, altitude
-     }) => {
-      this.setState({
-        messageId, numberOfSatellites,
-        center: {
-          lat, lng
-        },
-        day, month, year,
-        hour, minute, second,
-        temperature: append(temperature, this.state.temperature),
-        pressure: append(pressure, this.state.pressure),
-        humidity: append(humidity, this.state.humidity),
-        lightIntensity: append(lightIntensity, this.state.lightIntensity),
-        altitude: append(altitude, this.state.altitude)
+    const db = firebase.firestore();
+
+    db.collection("messages")
+      .orderBy("messageId", "desc")
+      .limit(25)
+      .onSnapshot(querySnapshot => {
+           console.log('update');
+
+          const temperature = [];
+          const pressure = [];
+          const humidity = [];
+          const lightIntensity = [];
+          const altitude = [];
+          let messageId, year, month, day, hour, second, minute, lat, lng, numberOfSatellites;
+          let first = true;
+
+          querySnapshot.forEach(doc => {
+              const data = doc.data();
+              if (first) {
+                messageId = data.messageId;
+                year = data.year;
+                month = data.month;
+                day = data.day;
+                hour = data.hour;
+                second = data.second;
+                minute = data.minute;
+                lat = data.lat;
+                lng = data.lng;
+                numberOfSatellites = data.numberOfSatellites;
+              }
+              
+              temperature.push(data.temperature);
+              pressure.push(data.pressure);
+              humidity.push(data.humidity);
+              lightIntensity.push(data.lightIntensity);
+              altitude.push(data.altitude);
+          });
+
+          this.setState({
+            temperature: reverse(temperature), pressure: reverse(pressure), humidity: reverse(humidity),
+            lightIntensity: reverse(lightIntensity), altitude: reverse(altitude), messageId, year, month, day, hour, second, minute, lat, lng, numberOfSatellites
+          });
       });
-      console.log(this.state);
-    });
   }
 
   updateDimensions() {
-    console.log('window.innerHeight');
     const spacingAndStuffLikeThat = 184;
     const titleHeight = 68;
     this.setState(pipe(

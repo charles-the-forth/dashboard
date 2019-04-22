@@ -80,7 +80,7 @@ server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
 
 const transformToDataObject = (array, index) => {
     const result = {
-        messageId: array[0],
+        messageId: parseInt(array[0]),
         temperature: {
             time: index,
             temperature: parseFloat(array[1])
