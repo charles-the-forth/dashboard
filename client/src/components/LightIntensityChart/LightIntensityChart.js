@@ -1,10 +1,11 @@
 import React from 'react';
 import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { takeLast } from 'ramda';
+import Typography from '@material-ui/core/Typography';
 
 const LightIntensityChart = ({ config, data }) => (
     <div className="chart-container">
-        <h2>Intenzita světla [lux]</h2>
+        <Typography variant="h5" gutterBottom>Intenzita světla [lux]</Typography>
         <ResponsiveContainer width="100%" height={config.height}>
             <AreaChart data={takeLast(config.maxShowedValues, data)}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className='chart'>
