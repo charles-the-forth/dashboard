@@ -12,7 +12,15 @@ const styles = theme => ({
 const Video = ({ config, classes }) => {
   return (
     <div style={{ height: config.height + 'px', width: '100%' }} className={classes.container}>
-        <h1>Video</h1>
+        <iframe
+            src="https://player.twitch.tv/?channel=charles4th_cansat&autoplay=true"
+            height={config.height}
+            width="100%"
+            frameborder="0"
+            scrolling="no"
+            allowfullscreen="true"
+            title="livestream">
+        </iframe>
     </div>);
 };
 
