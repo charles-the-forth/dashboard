@@ -82,6 +82,9 @@ class Dashboard extends Component {
         lat: 50.03718,
         lng: 15.779902
       },
+      hour: 0,
+      minute: 0,
+      second: 0
     };
 
     const db = firebase.firestore();
@@ -232,10 +235,17 @@ class Dashboard extends Component {
 }
 
 const formatDate = (day, month, year) => {
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  return day + ' ' + months[month - 1] + ' ' + year;
+  if (day !== undefined && month !== undefined && year !== undefined) {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return day + ' ' + months[month - 1] + ' ' + year;
+  }
+  return '';
 };
 
-const formatTime = (hour, minute, second) => ((hour < 10) ? '0' + hour.toString() : hour) + ':' + ((minute < 10) ? ('0' + minute.toString()): minute) + ':' + ((second < 10) ? ('0' + second.toString()): second);
-
+const formatTime = (hour, minute, second) => {
+  if (hour !== undefined && minute !== undefined && second !== undefined) {
+    return ((hour < 10) ? '0' + hour.toString() : hour) + ':' + ((minute < 10) ? ('0' + minute.toString()): minute) + ':' + ((second < 10) ? ('0' + second.toString()): second);
+  }
+  return '';
+};
 export default withStyles(styles)(Dashboard);
