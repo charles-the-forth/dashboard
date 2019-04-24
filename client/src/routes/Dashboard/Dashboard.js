@@ -7,7 +7,7 @@ import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
 import MapTile from '../../components/MapTile/MapTile';
 import InfoTile from '../../components/InfoTile/InfoTile';
 import Video from '../../components/Video/Video';
-import { pathOr, assocPath, pipe, reverse } from 'ramda';
+import { assocPath, pipe, reverse } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
@@ -256,7 +256,7 @@ class Dashboard extends Component {
               variant="h2"
               color="inherit"
               noWrap>
-              Chvilku strpení.
+              Chvilku strpení
             </Typography>
         </div>        
       );
