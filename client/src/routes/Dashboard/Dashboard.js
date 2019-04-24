@@ -122,9 +122,31 @@ class Dashboard extends Component {
               altitude.push(data.altitude);
           });
 
+          const center = {};
+          if (lat !== 0 && lng !== 0) {
+            center.lat = lat;
+            center.lng = lng;
+          } else {
+            center.lat = this.state.lat;
+            center.lng = this.state.lng;
+          }
+
+          if (year === 2000 && month === 0 && day === 0) {
+            year = this.state.year;
+            month = this.state.month;
+            day = this.state.day;
+          }
+          
+          if (hour === 0 && minute === 0 && second === 0) {
+            hour = this.state.hour;
+            minute = this.state.minute;
+            second = this.state.second;
+          }
+
           this.setState({
             temperature: reverse(temperature), pressure: reverse(pressure), humidity: reverse(humidity),
-            lightIntensity: reverse(lightIntensity), altitude: reverse(altitude), messageId, year, month, day, hour, second, minute, lat, lng, numberOfSatellites
+            lightIntensity: reverse(lightIntensity), altitude: reverse(altitude), messageId, year, month, day, hour, second, minute, numberOfSatellites,
+            center
           });
       });
   }
@@ -211,7 +233,7 @@ class Dashboard extends Component {
 
 const formatDate = (day, month, year) => {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  return day + ' ' + months[month] + ' ' + year;
+  return day + ' ' + months[month - 1] + ' ' + year;
 };
 
 const formatTime = (hour, minute, second) => ((hour < 10) ? '0' + hour.toString() : hour) + ':' + ((minute < 10) ? ('0' + minute.toString()): minute) + ':' + ((second < 10) ? ('0' + second.toString()): second);

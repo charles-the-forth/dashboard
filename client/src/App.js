@@ -19,10 +19,10 @@ export const App = () => {
         <FirebaseAuthConsumer>
           {({ isSignedIn, user, providerId }) => (
               isSignedIn ? <Switch>
-                <Route exact path='/' component={Dashboard} />
-                <Redirect from='*' to='/' />
-              </Switch>:
-              <SignInForm/>
+                <Route exact path='/secret-build' component={Dashboard} />
+                <Redirect from='*' to='/secret-build' />
+              </Switch> :
+            <SignInForm/>
           )}
         </FirebaseAuthConsumer>
       </FirebaseAuthProvider>
