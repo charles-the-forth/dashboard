@@ -10,7 +10,6 @@ import {
   FirebaseAuthConsumer,
 } from "@react-firebase/auth";
 import { config } from './config';
-import SignInForm from './components/SignInForm/SignInForm';
 
 export const App = () => {
   return (
@@ -18,11 +17,10 @@ export const App = () => {
       <FirebaseAuthProvider {...config} firebase={firebase}>
         <FirebaseAuthConsumer>
           {({ isSignedIn, user, providerId }) => (
-              isSignedIn ? <Switch>
-                <Route exact path='/secret-build' component={Dashboard} />
-                <Redirect from='*' to='/secret-build' />
-              </Switch> :
-            <SignInForm/>
+              <Switch>
+                <Route exact path='/live' component={Dashboard} />
+                <Redirect from='*' to='/live' />
+              </Switch>
           )}
         </FirebaseAuthConsumer>
       </FirebaseAuthProvider>
