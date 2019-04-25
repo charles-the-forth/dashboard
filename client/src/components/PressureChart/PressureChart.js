@@ -4,16 +4,14 @@ import { takeLast, reduce, max, min } from 'ramda';
 import Typography from '@material-ui/core/Typography';
 
 const PressureChart = ({ config, data }) => {
-    const lastData = takeLast(config.maxShowedValues, data);
-
-    const maxValue = reduce(max, 990, lastData) + 10;
-    const minValue = reduce(min, 990, lastData) - 10;
+    const maxValue = reduce(max, 990, data) + 10;
+    const minValue = reduce(min, 990, data) - 10;
 
     return (
         <div className="chart-container">
             <Typography variant="h5" gutterBottom>Tlak [hPa]</Typography>
             <ResponsiveContainer width="100%" height={config.height}>
-                <AreaChart data={lastData}
+                <AreaChart data={data}
                     margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className='chart'>
                     <CartesianGrid strokeDasharray="3 3" />
                     <YAxis domain={[minValue, maxValue]}/>
