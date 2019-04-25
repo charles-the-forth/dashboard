@@ -11,8 +11,8 @@ const AltitudeChart = ({ config, data }) => (
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
                 <YAxis />
+                <Area name="Externí" type='monotone' dataKey='altitudeExternal' stroke='#e64a19' fill='#ff5722' />
                 <Area name="CanSat" type='monotone' dataKey='altitudeCanSat' stroke='#087F23' fill='#4CAF50' />
-                <Area name="Externí" type='monotone' dataKey='altitudeExternal' stroke='#fdd835' fill='#ffee58' />
                 <Legend verticalAlign="bottom"/>
             </AreaChart>
         </ResponsiveContainer>

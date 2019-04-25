@@ -8,7 +8,7 @@ const MapTile = ({ center, config }) => {
       <GoogleMapReact
         bootstrapURLKeys={{ key: 'AIzaSyDL619YAcM88PzvrklYZPl6BVOJHPH83TQ' }}
         center={center}
-        defaultZoom={12}
+        defaultZoom={14}
         options={{draggable: false}}>
         <MapMarker
           lat={center.lat}

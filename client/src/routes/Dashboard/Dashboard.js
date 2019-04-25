@@ -27,6 +27,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import * as firebase from "firebase/app";
 import "firebase/firestore";
+import MapTile from '../../components/MapTile/MapTile';
 
 const styles = theme => ({
   logo: {
@@ -156,10 +157,7 @@ class Dashboard extends Component {
           maxShowedValues: 20
         }
       },
-      center: {
-        lat: 50.03718,
-        lng: 15.779902
-      },
+      center:{},
       hour: 0,
       minute: 0,
       second: 0
@@ -169,7 +167,7 @@ class Dashboard extends Component {
     const db = firebase.firestore();
 
     db.collection("results")
-      .orderBy("messageId", "desc")
+      .orderBy("messageId")
       .onSnapshot(querySnapshot => {
         const temperature = [];
         const pressure = [];
@@ -191,23 +189,20 @@ class Dashboard extends Component {
         const loadVoltage = [];
         const current = [];
         let messageId, year, month, day, hour, second, minute, lat, lng, numberOfSatellites;
-        let first = true;
-        let ready = false;
+        const center = {};
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          if (first) {
-            messageId = data.messageId;
-            year = data.year;
-            month = data.month;
-            day = data.day;
-            hour = data.hour;
-            second = data.second;
-            minute = data.minute;
-            lat = data.lat;
-            lng = data.lng;
-            numberOfSatellites = data.numberOfSatellites;
-          }
+          messageId = data.messageId;
+          year = data.year;
+          month = data.month;
+          day = data.day;
+          hour = data.hour;
+          second = data.second;
+          minute = data.minute;
+          lat = data.lat;
+          lng = data.lng;
+          numberOfSatellites = data.numberOfSatellites;
 
           temperature.push({
             temperatureCanSat: data.temperatureCanSat,
@@ -250,16 +245,12 @@ class Dashboard extends Component {
           loadVoltage.push({ loadVoltage: data.loadVoltage });
 
           current.push({ current: data.current });
-        });
 
-        const center = {};
-        if (lat !== 0 && lng !== 0) {
-          center.lat = lat;
-          center.lng = lng;
-        } else {
-          center.lat = this.state.lat;
-          center.lng = this.state.lng;
-        }
+          if (lat !== 0 && lng !== 0) {
+            center.lat = lat;
+            center.lng = lng;
+          }
+        });
 
         if (year === 2000 && month === 0 && day === 0) {
           year = this.state.year;
@@ -274,26 +265,15 @@ class Dashboard extends Component {
         }
 
         this.setState({
-          temperature: reverse(temperature),
-          pressure: reverse(pressure),
-          humidity: reverse(humidity),
-          lightIntensity: reverse(lightIntensity),
-          altitude: reverse(altitude),
-          messageId, year, month, day, hour, second, minute, numberOfSatellites,
-          center, ready: this.state.ready ? true : ready,
-          accelerationX: reverse(accelerationX),
-          accelerationY: reverse(accelerationY),
-          accelerationZ: reverse(accelerationZ),
-          rotationX: reverse(rotationX),
-          rotationY: reverse(rotationY),
-          rotationZ: reverse(rotationZ),
-          magnetometerX: reverse(magnetometerX),
-          magnetometerY: reverse(magnetometerY),
-          magnetometerZ: reverse(magnetometerZ),
-          airQuality: reverse(airQuality),
-          shuntVoltage: reverse(shuntVoltage),
-          loadVoltage: reverse(loadVoltage),
-          current: reverse(current)
+          temperature, pressure, humidity,
+          lightIntensity, altitude,
+          messageId, year, month, day, hour, second, minute, numberOfSatellites, center,
+          accelerationX, accelerationY, accelerationZ,
+          rotationX, rotationY, rotationZ,
+          magnetometerX, magnetometerY,
+          magnetometerZ, airQuality,
+          shuntVoltage, loadVoltage, current,
+          busVoltage
         });
 
         console.log(this.state);
@@ -349,6 +329,7 @@ class Dashboard extends Component {
         <Grid container spacing={16} className={classes.mainGrid}>
           <Grid item xs={12} sm={6} lg={4}>
             <Paper className={classes.paper}>
+              <MapTile center={this.state.center} config={this.state.config.map} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
@@ -363,93 +344,93 @@ class Dashboard extends Component {
               <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={classes.paper}>
               <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={classes.paper}>
               <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.altitudePaper}`}>
               <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3} className={classes.infoTileGrid}>
+          <Grid item xs={12} sm={6} lg={4} className={classes.infoTileGrid}>
             <InfoTile icon={'message'} title='Message ID' text={this.state.messageId} />
             <InfoTile icon={'satellite'} title='Number of satellites' text={this.state.numberOfSatellites} />
             <InfoTile icon={'calendar_today'} title='Date' text={formatDate(this.state.day, this.state.month, this.state.year)} />
             <InfoTile icon={'access_time'} title='Time' text={formatTime(this.state.hour, this.state.minute, this.state.second)} />
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.airQualityPaper}`}>
               <AirQualityChart data={this.state.airQuality} config={this.state.config.airQuality} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.shuntVoltagePaper}`}>
               <ShuntVoltageChart data={this.state.shuntVoltage} config={this.state.config.shuntVoltage} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.busVoltagePaper}`}>
               <BusVoltageChart data={this.state.busVoltage} config={this.state.config.busVoltage} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.loadVoltagePaper}`}>
               <LoadVoltageChart data={this.state.loadVoltage} config={this.state.config.loadVoltage} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.currentPaper}`}>
               <CurrentChart data={this.state.current} config={this.state.config.current} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.accelerationXPaper}`}>
               <AccelerationXChart data={this.state.accelerationX} config={this.state.config.accelerationX} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.accelerationYPaper}`}>
               <AccelerationYChart data={this.state.accelerationY} config={this.state.config.accelerationY} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.accelerationZPaper}`}>
               <AccelerationZChart data={this.state.accelerationZ} config={this.state.config.accelerationZ} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.rotationXPaper}`}>
               <RotationXChart data={this.state.rotationX} config={this.state.config.rotationX} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.rotationYPaper}`}>
               <RotationYChart data={this.state.rotationY} config={this.state.config.rotationY} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.rotationZPaper}`}>
               <RotationZChart data={this.state.rotationZ} config={this.state.config.rotationZ} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.magnetometerXPaper}`}>
               <MagnetometerXChart data={this.state.magnetometerX} config={this.state.config.magnetometerX} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.magnetometerYPaper}`}>
               <MagnetometerYChart data={this.state.magnetometerY} config={this.state.config.magnetometerY} />
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6} lg={3}>
+          <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.magnetometerZPaper}`}>
               <MagnetometerZChart data={this.state.magnetometerZ} config={this.state.config.magnetometerZ} />
             </Paper>
@@ -461,6 +442,7 @@ class Dashboard extends Component {
 }
 
 const formatDate = (day, month, year) => {
+  console.log(day, month, year);
   if (day !== undefined && month !== undefined && year !== undefined) {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return day + ' ' + months[month - 1] + ' ' + year;
