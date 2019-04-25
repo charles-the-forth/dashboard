@@ -148,7 +148,32 @@ class Dashboard extends Component {
           pressureExternal: 1010,
         }
       ],
-      humidity: [],
+      humidity: [
+        {
+          humidityCanSat: 10,
+          humidityExternal: 15,
+        },
+        {
+          humidityCanSat: 10,
+          humidityExternal: 15,
+        },
+        {
+          humidityCanSat: 10,
+          humidityExternal: 15,
+        },
+        {
+          humidityCanSat: 10,
+          humidityExternal: 15,
+        },
+        {
+          humidityCanSat: 10,
+          humidityExternal: 15,
+        },
+        {
+          humidityCanSat: 10,
+          humidityExternal: 15,
+        },
+      ],
       lightIntensity: [],
       altitude: [],
       config: {
