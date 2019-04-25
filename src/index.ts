@@ -63,8 +63,14 @@ const upload = () => {
             }
         })
         .filter((it: any) => it.messageId >= 1986 && it.messageId <= 2086)
+        .map((it: any) => {
+            it.messageId -= 1985;
+            return it;
+        })
         .forEach((it: any) => db.collection('results').add(it).then(ref => console.log(it.messageId)));
     });    
 };
 
 const parseGPS = (latInt, lat) => Math.floor(parseInt(latInt) / 100) + ((parseInt(latInt) % 100 + parseFloat('0.' + lat)) / 60);    
+
+upload();
