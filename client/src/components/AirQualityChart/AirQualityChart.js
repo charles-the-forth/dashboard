@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid, Legend } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid } from 'recharts';
 import { takeLast } from 'ramda';
 import Typography from '@material-ui/core/Typography';
 

@@ -6,6 +6,10 @@ import LightIntensityChart from '../../components/LightIntensityChart/LightInten
 import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
 import AirQualityChart from '../../components/AirQualityChart/AirQualityChart';
 import InfoTile from '../../components/InfoTile/InfoTile';
+import ShuntVoltageChart from '../../components/ShuntVoltageChart/ShuntVoltageChart';
+import BusVoltageChart from '../../components/BusVoltageChart/BusVoltageChart';
+import LoadVoltageChart from '../../components/LoadVoltageChart/LoadVoltageChart';
+import CurrentChart from '../../components/CurrentChart/CurrentChart';
 import { assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -240,6 +244,89 @@ class Dashboard extends Component {
           airQuality: 25,
         },
       ],
+      shuntVoltage: [
+        {
+          shuntVoltage: 12.0
+        },
+        {
+          shuntVoltage: 12.0
+        },
+        {
+          shuntVoltage: 12.0
+        },
+        {
+          shuntVoltage: 12.0
+        },
+        {
+          shuntVoltage: 12.0
+        },
+        {
+          shuntVoltage: 12.0
+        },
+      ],
+      busVoltage: [
+        {
+          busVoltage: 12.0
+        },
+        {
+          busVoltage: 12.0
+        },
+        {
+          busVoltage: 12.0
+        },
+        {
+          busVoltage: 12.0
+        },
+        {
+          busVoltage: 12.0
+        },
+        {
+          busVoltage: 12.0
+        },
+      ],
+      loadVoltage: [
+        {
+          loadVoltage: 25
+        },
+        {
+          loadVoltage: 25
+        },
+        {
+          loadVoltage: 25
+        },
+        {
+          loadVoltage: 25
+        },
+        {
+          loadVoltage: 25
+        },
+        {
+          loadVoltage: 25
+        },
+      ],
+      current: [
+        {
+          current: 50
+        },
+        {
+          current: 50
+        },
+        {
+          current: 50
+        },
+        {
+          current: 50
+        },
+        {
+          current: 50
+        },
+        {
+          current: 50
+        },
+        {
+          current: 50
+        },
+      ],
       config: {
         map: {},
         video: {},
@@ -260,6 +347,18 @@ class Dashboard extends Component {
         },
         infoTile: {},
         airQuality: {
+          maxShowedValues: 20
+        },
+        shuntVoltage: {
+          maxShowedValues: 20
+        },
+        busVoltage: {
+          maxShowedValues: 20
+        },
+        loadVoltage: {
+          maxShowedValues: 20
+        },
+        current: {
           maxShowedValues: 20
         }
       },
@@ -285,6 +384,10 @@ class Dashboard extends Component {
       assocPath(['config', 'lightIntensity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'altitude', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'airQuality', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'shuntVoltage', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'busVoltage', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'loadVoltage', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'current', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
     )(this.state));
   }
 
@@ -347,6 +450,26 @@ class Dashboard extends Component {
           <Grid item xs={12} sm={6} lg={3}>
             <Paper className={`${classes.paper} ${classes.airQualityPaper}`}>
               <AirQualityChart data={this.state.airQuality} config={this.state.config.airQuality} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.shuntVoltagePaper}`}>
+              <ShuntVoltageChart data={this.state.shuntVoltage} config={this.state.config.shuntVoltage} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.busVoltagePaper}`}>
+              <BusVoltageChart data={this.state.busVoltage} config={this.state.config.busVoltage} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.loadVoltagePaper}`}>
+              <LoadVoltageChart data={this.state.loadVoltage} config={this.state.config.loadVoltage} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.currentPaper}`}>
+              <CurrentChart data={this.state.current} config={this.state.config.current} />
             </Paper>
           </Grid>
         </Grid>
