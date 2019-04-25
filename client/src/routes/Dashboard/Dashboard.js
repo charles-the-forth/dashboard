@@ -13,6 +13,12 @@ import CurrentChart from '../../components/CurrentChart/CurrentChart';
 import AccelerationXChart from '../../components/AccelerationXChart/AccelerationXChart';
 import AccelerationYChart from '../../components/AccelerationYChart/AccelerationYChart';
 import AccelerationZChart from '../../components/AccelerationZChart/AccelerationZChart';
+import RotationXChart from '../../components/RotationXChart/RotationXChart';
+import RotationYChart from '../../components/RotationYChart/RotationYChart';
+import RotationZChart from '../../components/RotationZChart/RotationZChart';
+import MagnetometerXChart from '../../components/MagnetometerXChart/MagnetometerXChart';
+import MagnetometerYChart from '../../components/MagnetometerYChart/MagnetometerYChart';
+import MagnetometerZChart from '../../components/MagnetometerZChart/MagnetometerZChart';
 import { assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -120,6 +126,126 @@ class Dashboard extends Component {
         },
         {
           accelerationZ: 6
+        },
+      ],
+      rotationX: [
+        {
+          rotationX: 10
+        },
+        {
+          rotationX: 10
+        },
+        {
+          rotationX: 10
+        },
+        {
+          rotationX: 10
+        },
+        {
+          rotationX: 10
+        },
+        {
+          rotationX: 10
+        },
+      ],
+      rotationY: [
+        {
+          rotationY: 10
+        },
+        {
+          rotationY: 10
+        },
+        {
+          rotationY: 10
+        },
+        {
+          rotationY: 10
+        },
+        {
+          rotationY: 10
+        },
+        {
+          rotationY: 10
+        },
+      ],
+      rotationZ: [
+        {
+          rotationZ: 10
+        },
+        {
+          rotationZ: 10
+        },
+        {
+          rotationZ: 10
+        },
+        {
+          rotationZ: 10
+        },
+        {
+          rotationZ: 10
+        },
+        {
+          rotationZ: 10
+        },
+      ],
+      magnetometerX: [
+        {
+          magnetometerX: 10
+        },
+        {
+          magnetometerX: 10
+        },
+        {
+          magnetometerX: 10
+        },
+        {
+          magnetometerX: 10
+        },
+        {
+          magnetometerX: 10
+        },
+        {
+          magnetometerX: 10
+        },
+      ],
+      magnetometerY: [
+        {
+          magnetometerY: 10
+        },
+        {
+          magnetometerY: 10
+        },
+        {
+          magnetometerY: 10
+        },
+        {
+          magnetometerY: 10
+        },
+        {
+          magnetometerY: 10
+        },
+        {
+          magnetometerY: 10
+        },
+      ],
+      magnetometerZ: [
+        {
+          magnetometerZ: 10
+        },
+        {
+          magnetometerZ: 10
+        },
+        {
+          magnetometerZ: 10
+        },
+        {
+          magnetometerZ: 10
+        },
+        {
+          magnetometerZ: 10
+        },
+        {
+          magnetometerZ: 10
         },
       ],
       temperature: [
@@ -419,13 +545,31 @@ class Dashboard extends Component {
           maxShowedValues: 20
         },
         accelerationX: {
-          accelerationX: 20
+          maxShowedValues: 20
         },
         accelerationY: {
-          accelerationX: 20
+          maxShowedValues: 20
         },
         accelerationZ: {
-          accelerationX: 20
+          maxShowedValues: 20
+        },
+        rotationX: {
+          maxShowedValues: 20
+        },
+        rotationY: {
+          maxShowedValues: 20
+        },
+        rotationZ: {
+          maxShowedValues: 20
+        },
+        magnetometerX: {
+          maxShowedValues: 20
+        },
+        magnetometerY: {
+          maxShowedValues: 20
+        },
+        magnetometerZ: {
+          maxShowedValues: 20
         }
       },
       center: {
@@ -457,6 +601,12 @@ class Dashboard extends Component {
       assocPath(['config', 'accelerationX', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
       assocPath(['config', 'accelerationY', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
       assocPath(['config', 'accelerationZ', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'rotationX', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'rotationY', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'rotationZ', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'magnetometerX', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'magnetometerY', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'magnetometerZ', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
     )(this.state));
   }
 
@@ -554,6 +704,36 @@ class Dashboard extends Component {
           <Grid item xs={12} sm={6} lg={3}>
             <Paper className={`${classes.paper} ${classes.accelerationZPaper}`}>
               <AccelerationZChart data={this.state.accelerationZ} config={this.state.config.accelerationZ} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.rotationXPaper}`}>
+              <RotationXChart data={this.state.rotationX} config={this.state.config.rotationX} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.rotationYPaper}`}>
+              <RotationYChart data={this.state.rotationY} config={this.state.config.rotationY} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.rotationZPaper}`}>
+              <RotationZChart data={this.state.rotationZ} config={this.state.config.rotationZ} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.magnetometerXPaper}`}>
+              <MagnetometerXChart data={this.state.magnetometerX} config={this.state.config.magnetometerX} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.magnetometerYPaper}`}>
+              <MagnetometerYChart data={this.state.magnetometerY} config={this.state.config.magnetometerY} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.magnetometerZPaper}`}>
+              <MagnetometerZChart data={this.state.magnetometerZ} config={this.state.config.magnetometerZ} />
             </Paper>
           </Grid>
         </Grid>
