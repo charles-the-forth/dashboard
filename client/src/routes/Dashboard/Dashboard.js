@@ -4,6 +4,7 @@ import PressureChart from '../../components/PressureChart/PressureChart';
 import HumidityChart from '../../components/HumidityChart/HumidityChart';
 import LightIntensityChart from '../../components/LightIntensityChart/LightIntensityChart';
 import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
+import AirQualityChart from '../../components/AirQualityChart/AirQualityChart';
 import InfoTile from '../../components/InfoTile/InfoTile';
 import { assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
@@ -39,9 +40,6 @@ const styles = theme => ({
   infoTileGrid: {
     display: 'grid',
     gridRowGap: '16px'
-  },
-  altitudePaper: {
-    marginTop: '16px'
   },
   loadingContainer: {
     display: 'flex',
@@ -225,6 +223,23 @@ class Dashboard extends Component {
           altitudeExternal: 620,
         },
       ],
+      airQuality: [
+        {
+          airQuality: 25,
+        },
+        {
+          airQuality: 25,
+        },
+        {
+          airQuality: 25,
+        },
+        {
+          airQuality: 25,
+        },
+        {
+          airQuality: 25,
+        },
+      ],
       config: {
         map: {},
         video: {},
@@ -243,7 +258,10 @@ class Dashboard extends Component {
         altitude: {
           maxShowedValues: 20
         },
-        infoTile: {}
+        infoTile: {},
+        airQuality: {
+          maxShowedValues: 20
+        }
       },
       center: {
         lat: 50.03718,
@@ -266,6 +284,7 @@ class Dashboard extends Component {
       assocPath(['config', 'humidity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'lightIntensity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'altitude', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
+      assocPath(['config', 'airQuality', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
     )(this.state));
   }
 
@@ -324,6 +343,11 @@ class Dashboard extends Component {
             <InfoTile icon={'satellite'} title='Number of satellites' text={this.state.numberOfSatellites} />
             <InfoTile icon={'calendar_today'} title='Date' text={formatDate(this.state.day, this.state.month, this.state.year)} />
             <InfoTile icon={'access_time'} title='Time' text={formatTime(this.state.hour, this.state.minute, this.state.second)} />
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.airQualityPaper}`}>
+              <AirQualityChart data={this.state.airQuality} config={this.state.config.airQuality} />
+            </Paper>
           </Grid>
         </Grid>
       </div >
