@@ -1,16 +1,9 @@
-import * as express from 'express';
-import * as SocketIO from 'socket.io';
-import { Server } from 'http';
-import { Socket } from 'net';
-import * as SerialPort from 'serialport';
 import * as admin from 'firebase-admin';
+import * as fs from 'fs';
+import * as path from 'path';
+
 const serviceAccount = require('../../../Downloads/cansatweb-1547364100927-firebase-adminsdk-b30cq-ad9f633c25.json');
 
-const app = express();
-const server = new Server(app);
-const io = new SocketIO(server);
-const serverPort = 5000;
-let running = false;
 
 const firebaseApp = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -19,100 +12,59 @@ const firebaseApp = admin.initializeApp({
 
 const db = admin.firestore();
 
-const standard_input = process.stdin;
-standard_input.setEncoding('utf-8');
-
-io.on('connection', (socket: Socket) => {
-    if (!running) {
-        console.log("Enter port that you want to use:");
-        const portNames = [];
+const upload = () => {
+    fs.readFile(path.join(__dirname, '../csv/result.csv'), (err, data) => {
+        const lines = data.toString().split('\n');
+        lines.splice(0, 1);
+        lines.map(line => {
+            const values = line.split(';');
     
-        SerialPort.list((err, ports) =>
-            ports.forEach((port, index) => {
-                portNames.push(port.comName);
-                console.log((index + 1) + ' - ' + port.comName);
-            })
-        );
-    
-        standard_input.on('data', data => {
-            const numberInput = Number(data);
-            if (numberInput !== NaN && numberInput <= portNames.length) {
-                connectToPort(portNames[numberInput - 1]);
+            if (values.length >= 37) {
+                const result = {
+                    messageId: parseInt(values[0]),
+                    light: parseInt(values[1]),
+                    capacity: parseInt(values[2]),
+                    temperatureCanSat: parseFloat(values[4]),
+                    temperatureMPU: parseFloat(values[5]),
+                    temperatureExternal: parseFloat(values[6]),
+                    humidityCanSat: parseFloat(values[7]),
+                    humidityExternal: parseFloat(values[8]),
+                    airQuality: parseFloat(values[9]),
+                    pressureCanSat: parseFloat(values[10]),
+                    pressureExternal: parseFloat(values[11]),
+                    altitudeCanSat: parseFloat(values[12]),
+                    altitudeExternal: parseFloat(values[13]),
+                    accelerationX: parseFloat(values[14]),
+                    accelerationY: parseFloat(values[15]),
+                    accelerationZ: parseFloat(values[16]),
+                    rotationX: parseFloat(values[17]),
+                    rotationY: parseFloat(values[18]),
+                    rotationZ: parseFloat(values[19]),
+                    magnetometerX: parseFloat(values[20]),
+                    magnetometerY: parseFloat(values[21]),
+                    magnetometerZ: parseFloat(values[22]),
+                    year: parseInt(values[23]),
+                    month: parseInt(values[24]),
+                    day: parseInt(values[25]),
+                    hour: parseInt(values[26]),
+                    minute: parseInt(values[27]),
+                    second: parseInt(values[28]),
+                    numberOfSatellites: parseInt(values[29]),
+                    lat: parseGPS(values[30], values[32]),
+                    lng: parseGPS(values[31], values[33]),
+                    shuntVoltage: parseFloat(values[34]),
+                    busVoltage: parseFloat(values[35]),
+                    current: parseFloat(values[36]),
+                    loadVoltage: parseFloat(values[37])
+                };
+                return result;
             } else {
-                console.log('Exiting program due to wrong input.');
-                process.exit();
+                return {};
             }
-        });
-    }
-});
-
-const connectToPort = portName => {
-    const port = new SerialPort(portName, {
-        baudRate: 57600,
-        parser: new SerialPort.parsers.Readline('\n')
-    });
-
-    port.on('open', () => {
-        running = true;
-        let index = 0;
-        let buffer = '';
-        port.on('data', input => {
-            if (index > 100) {
-                index = 0;
-            }
-            buffer += input.toString();
-            if (buffer.indexOf('END') !== -1) {
-                const data = buffer.substring(buffer.indexOf('START') + 6, buffer.indexOf('END') - 1);
-                buffer = buffer.substring(buffer.indexOf('\n') + 1);
-
-
-                const dataObj = transformToDataObject(data.split(/[=;]/), index);
-
-                db.collection('messages').add(dataObj);              
-                io.sockets.emit('data updated', dataObj);
-            }
-            index++;
-        });
-    });
+        })
+        .filter((it: any) => it.messageId >= 1986 && it.messageId <= 2086)
+        .forEach((it: any) => db.collection('results').add(it).then(ref => console.log(it.messageId)));
+    });    
 };
 
-server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
-
-const transformToDataObject = (array, index) => {
-    const result = {
-        messageId: parseInt(array[0]),
-        temperature: {
-            time: index,
-            temperature: parseFloat(array[1])
-        },
-        pressure: {
-            time: index,
-            pressure: parseFloat(array[2])
-        },
-        humidity: {
-            time: index,
-            humidity: parseFloat(array[3])
-        },
-        lightIntensity: {
-            time: index,
-            lightIntensity: parseFloat(array[4])
-        },
-        altitude: {
-            time: index,
-            altitude: parseFloat(array[5]),
-        },
-        numberOfSatellites: parseInt(array[6]),
-        year: parseInt(array[7]),
-        month: parseInt(array[8]),
-        day: parseInt(array[9]),
-        hour: parseInt(array[10]),
-        minute: parseInt(array[11]),
-        second: parseInt(array[12]),
-        lat: parseGPS(array[13], array[15]),
-        lng: parseGPS(array[14], array[16]),
-    };
-
-    return result;
-}
-
-const parseGPS = (latInt, lat) => Math.floor(parseInt(latInt) / 100) + ((parseInt(latInt) % 100 + parseFloat('0.' + lat)) / 60);
+const parseGPS = (latInt, lat) => Math.floor(parseInt(latInt) / 100) + ((parseInt(latInt) % 100 + parseFloat('0.' + lat)) / 60);    
