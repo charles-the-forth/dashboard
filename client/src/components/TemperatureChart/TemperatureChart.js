@@ -11,9 +11,9 @@ const TemperatureChart = ({ config, data }) => (
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="chart">
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis />
-                <Area name='Teplota interní' type='monotone' dataKey='temperatureCanSat' stroke='#FFA000' fill='#FFC107' />
-                <Area name='Teplota BME280' type='monotone' dataKey='temperatureExternal' stroke='#FFA000' fill='#FFC107' />
-                <Area name='Teplota MPU' type='monotone' dataKey='temperatureMPU' stroke='#FFAAA0' fill='#FFC107' />
+                <Area name='Teplota CanSat' type='monotone' dataKey='temperatureCanSat' stroke='#e65100' fill='#f57c00' />
+                <Area name='Teplota BME280' type='monotone' dataKey='temperatureExternal' stroke='#b71c1c' fill='#d32f2f' />
+                <Area name='Teplota MPU' type='monotone' dataKey='temperatureMPU' stroke='#880e4f' fill='#c2185b' />
                 <Legend verticalAlign="bottom"/>
             </AreaChart>
         </ResponsiveContainer>

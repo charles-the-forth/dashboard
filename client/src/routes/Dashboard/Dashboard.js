@@ -110,7 +110,44 @@ class Dashboard extends Component {
           temperatureMPU: 26.0,
         }
       ],
-      pressure: [],
+      pressure: [
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        },
+        {
+          pressureCanSat: 1001,
+          pressureExternal: 1010,
+        }
+      ],
       humidity: [],
       lightIntensity: [],
       altitude: [],
