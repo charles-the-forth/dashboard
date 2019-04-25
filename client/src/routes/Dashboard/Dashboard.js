@@ -10,6 +10,9 @@ import ShuntVoltageChart from '../../components/ShuntVoltageChart/ShuntVoltageCh
 import BusVoltageChart from '../../components/BusVoltageChart/BusVoltageChart';
 import LoadVoltageChart from '../../components/LoadVoltageChart/LoadVoltageChart';
 import CurrentChart from '../../components/CurrentChart/CurrentChart';
+import AccelerationXChart from '../../components/AccelerationXChart/AccelerationXChart';
+import AccelerationYChart from '../../components/AccelerationYChart/AccelerationYChart';
+import AccelerationZChart from '../../components/AccelerationZChart/AccelerationZChart';
 import { assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -65,6 +68,60 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       ready: false,
+      accelerationX: [
+        {
+          accelerationX: 5
+        },
+        {
+          accelerationX: 5
+        },
+        {
+          accelerationX: 5
+        },
+        {
+          accelerationX: 5
+        },
+        {
+          accelerationX: 5
+        },
+        {
+          accelerationX: 5
+        },
+      ],
+      accelerationY: [
+        {
+          accelerationY: 4
+        },
+        {
+          accelerationY: 4
+        },
+        {
+          accelerationY: 4
+        },
+        {
+          accelerationY: 4
+        },
+        {
+          accelerationY: 4
+        },
+      ],
+      accelerationZ: [
+        {
+          accelerationZ: 6
+        },
+        {
+          accelerationZ: 5
+        },
+        {
+          accelerationZ: 6
+        },
+        {
+          accelerationZ: 6
+        },
+        {
+          accelerationZ: 6
+        },
+      ],
       temperature: [
         {
           temperatureCanSat: 28.0,
@@ -360,6 +417,15 @@ class Dashboard extends Component {
         },
         current: {
           maxShowedValues: 20
+        },
+        accelerationX: {
+          accelerationX: 20
+        },
+        accelerationY: {
+          accelerationX: 20
+        },
+        accelerationZ: {
+          accelerationX: 20
         }
       },
       center: {
@@ -388,6 +454,9 @@ class Dashboard extends Component {
       assocPath(['config', 'busVoltage', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
       assocPath(['config', 'loadVoltage', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
       assocPath(['config', 'current', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'accelerationX', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'accelerationY', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'accelerationZ', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
     )(this.state));
   }
 
@@ -470,6 +539,21 @@ class Dashboard extends Component {
           <Grid item xs={12} sm={6} lg={3}>
             <Paper className={`${classes.paper} ${classes.currentPaper}`}>
               <CurrentChart data={this.state.current} config={this.state.config.current} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.accelerationXPaper}`}>
+              <AccelerationXChart data={this.state.accelerationX} config={this.state.config.accelerationX} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.accelerationYPaper}`}>
+              <AccelerationYChart data={this.state.accelerationY} config={this.state.config.accelerationY} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
+            <Paper className={`${classes.paper} ${classes.accelerationZPaper}`}>
+              <AccelerationZChart data={this.state.accelerationZ} config={this.state.config.accelerationZ} />
             </Paper>
           </Grid>
         </Grid>
