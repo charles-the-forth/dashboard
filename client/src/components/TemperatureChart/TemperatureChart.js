@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
 import { takeLast } from 'ramda';
 import Typography from '@material-ui/core/Typography';
 
@@ -11,9 +11,12 @@ const TemperatureChart = ({ config, data }) => (
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="chart">
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis />
-                <Area name='Teplota' type='monotone' dataKey='temperature' stroke='#FFA000' fill='#FFC107' />
+                <Area name='Teplota interní' type='monotone' dataKey='temperatureCanSat' stroke='#FFA000' fill='#FFC107' />
+                <Area name='Teplota BME280' type='monotone' dataKey='temperatureExternal' stroke='#FFA000' fill='#FFC107' />
+                <Area name='Teplota MPU' type='monotone' dataKey='temperatureMPU' stroke='#FFAAA0' fill='#FFC107' />
+                <Legend verticalAlign="bottom"/>
             </AreaChart>
-        </ResponsiveContainer>        
+        </ResponsiveContainer>
     </div>
 );
 
