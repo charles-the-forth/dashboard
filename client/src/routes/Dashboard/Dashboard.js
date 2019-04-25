@@ -174,8 +174,57 @@ class Dashboard extends Component {
           humidityExternal: 15,
         },
       ],
-      lightIntensity: [],
-      altitude: [],
+      lightIntensity: [
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        },
+        {
+          lightIntensity: 250,
+        }
+      ],
+      altitude: [
+        {
+          altitudeCanSat: 600,
+          altitudeExternal: 620,
+        },
+        {
+          altitudeCanSat: 600,
+          altitudeExternal: 620,
+        },
+        {
+          altitudeCanSat: 600,
+          altitudeExternal: 620,
+        },
+        {
+          altitudeCanSat: 600,
+          altitudeExternal: 620,
+        },
+        {
+          altitudeCanSat: 600,
+          altitudeExternal: 620,
+        },
+      ],
       config: {
         map: {},
         video: {},
@@ -215,8 +264,8 @@ class Dashboard extends Component {
       assocPath(['config', 'temperature', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'pressure', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
       assocPath(['config', 'humidity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
-      assocPath(['config', 'lightIntensity', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 16 - 43) / 2),
-      assocPath(['config', 'altitude', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 16 - 43) / 2),
+      assocPath(['config', 'lightIntensity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
+      assocPath(['config', 'altitude', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
     )(this.state));
   }
 
@@ -264,6 +313,8 @@ class Dashboard extends Component {
             <Paper className={classes.paper}>
               <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
             </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3}>
             <Paper className={`${classes.paper} ${classes.altitudePaper}`}>
               <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
             </Paper>
