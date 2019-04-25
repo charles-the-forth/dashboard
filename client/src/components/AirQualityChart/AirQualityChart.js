@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import Typography from '@material-ui/core/Typography';
 
 const AirQualityChart = ({ config, data }) => (
@@ -9,6 +9,7 @@ const AirQualityChart = ({ config, data }) => (
             <AreaChart data={data}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="chart">
                 <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
                 <YAxis />
                 <Area name="Kvalita vzduchu" type='monotone' dataKey='airQuality' stroke='#039be5' fill='#4fc3f7' />
             </AreaChart>

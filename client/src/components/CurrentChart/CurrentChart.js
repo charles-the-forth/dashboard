@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import Typography from '@material-ui/core/Typography';
 
 const CurrentChart = ({ config, data }) => (
@@ -9,6 +9,7 @@ const CurrentChart = ({ config, data }) => (
             <AreaChart data={data}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className='chart'>
                 <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
                 <YAxis />
                 <Area name='Current' type='monotone' dataKey='current' stroke='#c62828' fill='#ef5350' />
             </AreaChart>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import Typography from '@material-ui/core/Typography';
 
 const RotationYChart = ({ config, data }) => (
@@ -9,6 +9,7 @@ const RotationYChart = ({ config, data }) => (
             <AreaChart data={data}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="chart">
                 <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
                 <YAxis />
                 <Area name="Natočení v ose y [°]" type='monotone' dataKey='rotationY' stroke='#9e9d24' fill='#d4e157' />
             </AreaChart>

@@ -19,12 +19,13 @@ import RotationZChart from '../../components/RotationZChart/RotationZChart';
 import MagnetometerXChart from '../../components/MagnetometerXChart/MagnetometerXChart';
 import MagnetometerYChart from '../../components/MagnetometerYChart/MagnetometerYChart';
 import MagnetometerZChart from '../../components/MagnetometerZChart/MagnetometerZChart';
-import { assocPath, pipe } from 'ramda';
+import { assocPath, pipe, reverse } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import * as firebase from "firebase/app";
 import "firebase/firestore";
 
 const styles = theme => ({
@@ -163,6 +164,140 @@ class Dashboard extends Component {
       minute: 0,
       second: 0
     };
+
+
+    const db = firebase.firestore();
+
+    db.collection("results")
+      .orderBy("messageId", "desc")
+      .onSnapshot(querySnapshot => {
+        const temperature = [];
+        const pressure = [];
+        const humidity = [];
+        const lightIntensity = [];
+        const altitude = [];
+        const accelerationX = [];
+        const accelerationY = [];
+        const accelerationZ = [];
+        const rotationX = [];
+        const rotationY = [];
+        const rotationZ = [];
+        const magnetometerX = [];
+        const magnetometerY = [];
+        const magnetometerZ = [];
+        const airQuality = [];
+        const shuntVoltage = [];
+        const busVoltage = [];
+        const loadVoltage = [];
+        const current = [];
+        let messageId, year, month, day, hour, second, minute, lat, lng, numberOfSatellites;
+        let first = true;
+        let ready = false;
+
+        querySnapshot.forEach(doc => {
+          const data = doc.data();
+          if (first) {
+            messageId = data.messageId;
+            year = data.year;
+            month = data.month;
+            day = data.day;
+            hour = data.hour;
+            second = data.second;
+            minute = data.minute;
+            lat = data.lat;
+            lng = data.lng;
+            numberOfSatellites = data.numberOfSatellites;
+          }
+
+          temperature.push({
+            temperatureCanSat: data.temperatureCanSat,
+            temperatureExternal: data.temperatureExternal,
+            temperatureMPU: data.temperatureMPU,
+          });
+
+          pressure.push({
+            pressureCanSat: data.pressureCanSat,
+            pressureExternal: data.pressureExternal
+          });
+
+          humidity.push({
+            humidityCanSat: data.humidityCanSat,
+            humidityExternal: data.humidityExternal,
+          });
+
+          lightIntensity.push({ lightIntensity: data.light });
+
+          accelerationX.push({ accelerationX: data.accelerationX });
+          accelerationY.push({ accelerationY: data.accelerationY });
+          accelerationZ.push({ accelerationZ: data.accelerationZ });
+
+          rotationX.push({ rotationX: data.rotationX });
+          rotationY.push({ rotationY: data.rotationY });
+          rotationZ.push({ rotationZ: data.rotationZ });
+
+          magnetometerX.push({ magnetometerX: data.magnetometerX });
+          magnetometerY.push({ magnetometerY: data.magnetometerY });
+          magnetometerZ.push({ magnetometerZ: data.magnetometerZ });
+
+          altitude.push({ altitudeCanSat: data.altitudeCanSat, altitudeExternal: data.altitudeExternal });
+
+          airQuality.push({ airQuality: data.airQuality });
+
+          shuntVoltage.push({ shuntVoltage: data.shuntVoltage });
+
+          busVoltage.push({ busVoltage: data.busVoltage });
+
+          loadVoltage.push({ loadVoltage: data.loadVoltage });
+
+          current.push({ current: data.current });
+        });
+
+        const center = {};
+        if (lat !== 0 && lng !== 0) {
+          center.lat = lat;
+          center.lng = lng;
+        } else {
+          center.lat = this.state.lat;
+          center.lng = this.state.lng;
+        }
+
+        if (year === 2000 && month === 0 && day === 0) {
+          year = this.state.year;
+          month = this.state.month;
+          day = this.state.day;
+        }
+
+        if (hour === 0 && minute === 0 && second === 0) {
+          hour = this.state.hour;
+          minute = this.state.minute;
+          second = this.state.second;
+        }
+
+        this.setState({
+          temperature: reverse(temperature),
+          pressure: reverse(pressure),
+          humidity: reverse(humidity),
+          lightIntensity: reverse(lightIntensity),
+          altitude: reverse(altitude),
+          messageId, year, month, day, hour, second, minute, numberOfSatellites,
+          center, ready: this.state.ready ? true : ready,
+          accelerationX: reverse(accelerationX),
+          accelerationY: reverse(accelerationY),
+          accelerationZ: reverse(accelerationZ),
+          rotationX: reverse(rotationX),
+          rotationY: reverse(rotationY),
+          rotationZ: reverse(rotationZ),
+          magnetometerX: reverse(magnetometerX),
+          magnetometerY: reverse(magnetometerY),
+          magnetometerZ: reverse(magnetometerZ),
+          airQuality: reverse(airQuality),
+          shuntVoltage: reverse(shuntVoltage),
+          loadVoltage: reverse(loadVoltage),
+          current: reverse(current)
+        });
+
+        console.log(this.state);
+      });
   }
 
   updateDimensions() {

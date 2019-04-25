@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid, Legend } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid, Legend, Tooltip } from 'recharts';
 import Typography from '@material-ui/core/Typography';
 
 const AltitudeChart = ({ config, data }) => (
@@ -9,6 +9,7 @@ const AltitudeChart = ({ config, data }) => (
             <AreaChart data={data}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="chart">
                 <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
                 <YAxis />
                 <Area name="CanSat" type='monotone' dataKey='altitudeCanSat' stroke='#087F23' fill='#4CAF50' />
                 <Area name="Externí" type='monotone' dataKey='altitudeExternal' stroke='#fdd835' fill='#ffee58' />

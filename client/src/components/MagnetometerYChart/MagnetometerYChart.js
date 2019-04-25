@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid } from 'recharts';
+import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import Typography from '@material-ui/core/Typography';
 
 const MagnetometerYChart = ({ config, data }) => (
@@ -9,6 +9,7 @@ const MagnetometerYChart = ({ config, data }) => (
             <AreaChart data={data}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="chart">
                 <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
                 <YAxis />
                 <Area name="Natočení k mag. pólu v ose y [°]" type='monotone' dataKey='magnetometerY' stroke='#004d40' fill='#009688' />
             </AreaChart>
