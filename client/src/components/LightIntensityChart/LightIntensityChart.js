@@ -1,6 +1,5 @@
 import React from 'react';
 import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
-import { takeLast } from 'ramda';
 import Typography from '@material-ui/core/Typography';
 
 const LightIntensityChart = ({ config, data }) => (

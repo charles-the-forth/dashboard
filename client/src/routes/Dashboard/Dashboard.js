@@ -10,16 +10,16 @@ import ShuntVoltageChart from '../../components/ShuntVoltageChart/ShuntVoltageCh
 import BusVoltageChart from '../../components/BusVoltageChart/BusVoltageChart';
 import LoadVoltageChart from '../../components/LoadVoltageChart/LoadVoltageChart';
 import CurrentChart from '../../components/CurrentChart/CurrentChart';
-import AccelerationXChart from '../../components/AccelerationXChart/AccelerationXChart';
-import AccelerationYChart from '../../components/AccelerationYChart/AccelerationYChart';
-import AccelerationZChart from '../../components/AccelerationZChart/AccelerationZChart';
+import SpeedXChart from '../../components/SpeedXChart/SpeedXChart';
+import SpeedYChart from '../../components/SpeedYChart/SpeedYChart';
+import SpeedZChart from '../../components/SpeedZChart/SpeedZChart';
 import RotationXChart from '../../components/RotationXChart/RotationXChart';
 import RotationYChart from '../../components/RotationYChart/RotationYChart';
 import RotationZChart from '../../components/RotationZChart/RotationZChart';
 import MagnetometerXChart from '../../components/MagnetometerXChart/MagnetometerXChart';
 import MagnetometerYChart from '../../components/MagnetometerYChart/MagnetometerYChart';
 import MagnetometerZChart from '../../components/MagnetometerZChart/MagnetometerZChart';
-import { assocPath, pipe, reverse } from 'ramda';
+import { assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
@@ -392,17 +392,17 @@ class Dashboard extends Component {
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.accelerationXPaper}`}>
-              <AccelerationXChart data={this.state.accelerationX} config={this.state.config.accelerationX} />
+              <SpeedXChart data={this.state.accelerationX} config={this.state.config.accelerationX} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.accelerationYPaper}`}>
-              <AccelerationYChart data={this.state.accelerationY} config={this.state.config.accelerationY} />
+              <SpeedYChart data={this.state.accelerationY} config={this.state.config.accelerationY} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Paper className={`${classes.paper} ${classes.accelerationZPaper}`}>
-              <AccelerationZChart data={this.state.accelerationZ} config={this.state.config.accelerationZ} />
+              <SpeedZChart data={this.state.accelerationZ} config={this.state.config.accelerationZ} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
@@ -442,7 +442,6 @@ class Dashboard extends Component {
 }
 
 const formatDate = (day, month, year) => {
-  console.log(day, month, year);
   if (day !== undefined && month !== undefined && year !== undefined) {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return day + ' ' + months[month - 1] + ' ' + year;
