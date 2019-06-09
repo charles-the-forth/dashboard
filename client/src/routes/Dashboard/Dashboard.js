@@ -264,13 +264,47 @@ class Dashboard extends Component {
           second = this.state.second;
         }
 
+        let allIterator = 0;
+        let seriesIndex = 0;
+        const magnetometerXArrays = [{data: [], seriesIndex}];
+
+        magnetometerX.forEach(it => {
+          if (allIterator === 0) {
+            magnetometerXArrays[seriesIndex].data[allIterator] = {magnetometerX: it.magnetometerX};
+          } else {
+            console.log(magnetometerXArrays);
+
+            const nextNumber = it.magnetometerX + magnetometerXArrays[seriesIndex].data[allIterator - 1].magnetometerX; 
+            
+            console.log('nextNumber: ' + nextNumber);
+
+            if (nextNumber > 180) {
+              magnetometerXArrays[seriesIndex].data[allIterator] = 180;
+
+              seriesIndex++;
+
+              magnetometerXArrays[seriesIndex] = {data: [], seriesIndex};
+
+              magnetometerXArrays[seriesIndex].data[allIterator] = {magnetometerX: -180};
+              allIterator++;
+              magnetometerXArrays[seriesIndex].data[allIterator] = {magnetometerX: nextNumber - 360};
+            } else {
+              magnetometerXArrays[seriesIndex].data.push({
+                magnetometerX: nextNumber
+              });
+            }
+          }
+
+          allIterator++;
+        });
+
         this.setState({
           temperature, pressure, humidity,
           lightIntensity, altitude,
           messageId, year, month, day, hour, second, minute, numberOfSatellites, center,
           accelerationX, accelerationY, accelerationZ,
           rotationX, rotationY, rotationZ,
-          magnetometerX, magnetometerY,
+          magnetometerX: magnetometerXArrays, magnetometerY,
           magnetometerZ, airQuality,
           shuntVoltage, loadVoltage, current,
           busVoltage
