@@ -40,11 +40,10 @@ const styles = theme => ({
     margin: '12px',
     width: 'calc(100% - 32px)'
   },
-  infoTileGrid: {
-    display: 'grid',
-    gridRowGap: '16px'
+  infoTile: {
+    marginTop: '16px'
   },
-  altitudePaper: {
+  bottomPaper: {
     marginTop: '16px'
   },
   loadingContainer: {
@@ -172,14 +171,21 @@ class Dashboard extends Component {
   updateDimensions() {
     const spacingAndStuffLikeThat = 184;
     const titleHeight = 68;
+    const topAndBottomSpacing = 24;
+    const padding = 12;
+    const marginTop = 16;
+    const headingMarginBottom = 3;
+
     this.setState(pipe(
       assocPath(['config', 'map', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
-      assocPath(['config', 'video', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
-      assocPath(['config', 'temperature', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
-      assocPath(['config', 'pressure', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
-      assocPath(['config', 'humidity', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight + 28),
+      assocPath(['config', 'temperature', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 16 - 43) / 2),
+      assocPath(['config', 'pressure', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 16 - 43) / 2),
+      assocPath(['config', 'humidity', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 16 - 43) / 2),
       assocPath(['config', 'lightIntensity', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 16 - 43) / 2),
       assocPath(['config', 'altitude', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 16 - 43) / 2),
+      assocPath(['config', 'infoTile', 'height'], (((window.innerHeight - titleHeight - topAndBottomSpacing) / 2 - (4 * padding) - (3 * marginTop) - (4 * headingMarginBottom)) / 4)),
+      assocPath(['config', 'map', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
+      assocPath(['config', 'speedZ', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - topAndBottomSpacing - 16),
     )(this.state));
   }
 
@@ -205,11 +211,6 @@ class Dashboard extends Component {
           <Grid container spacing={16} className={classes.mainGrid}>
             <Grid item xs={12} sm={6} lg={4}>
               <Paper className={classes.paper}>
-                <Video config={this.state.config.video} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={4}>
-              <Paper className={classes.paper}>
                 <MapTile center={this.state.center} config={this.state.config.map} />
               </Paper>
             </Grid>
@@ -219,30 +220,39 @@ class Dashboard extends Component {
                   data={this.state.temperature}
                   config={this.state.config.temperature} />
               </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={3}>
-              <Paper className={classes.paper}>
+              <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
                 <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={6} lg={3}>
+            <Grid item xs={12} sm={6} lg={4}>
               <Paper className={classes.paper}>
                 <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
               </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={3}>
-              <Paper className={classes.paper}>
+              <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
                 <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
               </Paper>
-              <Paper className={`${classes.paper} ${classes.altitudePaper}`}>
-                <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
+            </Grid>
+            <Grid item xs={12} sm={6} lg={4}>
+              <Paper className={classes.paper}>
+                <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
+              </Paper>
+              <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
+                <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={6} lg={3} className={classes.infoTileGrid}>
-              <InfoTile icon={'message'} title='Message ID' text={this.state.messageId} />
-              <InfoTile icon={'satellite'} title='Number of satellites' text={this.state.numberOfSatellites} />
-              <InfoTile icon={'calendar_today'} title='Date' text={formatDate(this.state.day, this.state.month, this.state.year)} />
-              <InfoTile icon={'access_time'} title='Time' text={formatTime(this.state.hour, this.state.minute, this.state.second)} />
+            <Grid item xs={12} sm={6} lg={4}>
+              <Paper className={classes.paper}>
+                <HumidityChart data={this.state.humidity} config={this.state.config.speedZ} />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={4}>
+              <InfoTile config={this.state.config.infoTile} icon={'message'} title='Message ID' text={this.state.messageId} />
+              <div className={classes.bottomPaper}>
+                <InfoTile config={this.state.config.infoTile} icon={'satellite'} title='Number of satellites' text={this.state.numberOfSatellites} />
+              </div>
+              <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
+                <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
+              </Paper>
             </Grid>
           </Grid>
         </div >

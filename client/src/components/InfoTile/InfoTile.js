@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
+import { height } from 'window-size';
 
 const styles = theme => ({
     paper: {
@@ -33,8 +34,8 @@ const styles = theme => ({
     }
 });
 
-const InfoTile = withStyles(styles)(({ icon, title, text, classes }) => (
-    <Paper className={classes.paper}>
+const InfoTile = withStyles(styles)(({ icon, title, text, classes, config }) => (
+    <Paper className={classes.paper} style={{height: config.height}}>
         <Typography variant="h6" gutterBottom className={classes.title}>{title}</Typography>
         <div className={classes.row}>
             <Icon className={classes.icon}>{icon}</Icon>
