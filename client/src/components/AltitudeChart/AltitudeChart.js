@@ -1,8 +1,10 @@
 import React from 'react';
 import { AreaChart, Area, ResponsiveContainer, YAxis, CartesianGrid, Legend, Tooltip, Label } from 'recharts';
+import Typography from '@material-ui/core/Typography';
 
 const AltitudeChart = ({ config, data }) => (
     <div className="chart-container">
+        <Typography variant="h5" gutterBottom>Altitude</Typography>
         <ResponsiveContainer width="100%" height={config.height}>
             <AreaChart data={data}
                 margin={{ top: 0, right: 0, left: 5, bottom: 0 }} className="chart">
