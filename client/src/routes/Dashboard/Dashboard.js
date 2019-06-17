@@ -53,6 +53,9 @@ class Dashboard extends Component {
       humidity: [],
       lightIntensity: [],
       altitude: [],
+      co2: [],
+      tvoc: [],
+      o2Concentration: [],
       config: {
         map: {},
         temperature: {
@@ -80,27 +83,26 @@ class Dashboard extends Component {
     };
 
     this.state.socket.on('data updated', ({
-      messageId, numberOfSatellites, lat, lng, day, month, year, hour, minute, second, temperature, pressure, humidity, lightIntensity, altitude
-     }) => {
+      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, o2Concentration
+    }) => {
       this.setState({
         messageId, numberOfSatellites,
         center: {
           lat, lng
         },
-        day, month, year,
-        hour, minute, second,
         temperature: append(temperature, this.state.temperature),
         pressure: append(pressure, this.state.pressure),
         humidity: append(humidity, this.state.humidity),
         lightIntensity: append(lightIntensity, this.state.lightIntensity),
-        altitude: append(altitude, this.state.altitude)
+        altitude: append(altitude, this.state.altitude),
+        co2: append(co2, this.state.co2),
+        tvoc: append(tvoc, this.state.tvoc),
+        o2Concentration: append(o2Concentration, this.state.o2Concentration),
       });
-      console.log(this.state);
     });
   }
 
   updateDimensions() {
-    console.log('window.innerHeight');
     const spacingAndStuffLikeThat = 184;
     const titleHeight = 68;
     this.setState(pipe(

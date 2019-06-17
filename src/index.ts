@@ -67,36 +67,40 @@ server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
 
 const transformToDataObject = (array, index) => {
     const result = {
-        messageId: array[0],
+        messageId: parseInt(array[0]),
+        lightIntensity: {
+            time: index,
+            lightIntensity: parseFloat(array[1])
+        },
         temperature: {
             time: index,
-            temperature: parseFloat(array[1])
+            temperatureCanSat: parseFloat(array[2]),
+            temperatureExternal: parseFloat(array[3]),
         },
         pressure: {
             time: index,
-            pressure: parseFloat(array[2])
+            pressureCanSat: parseFloat(array[8]),
+            pressureExternal: parseFloat(array[9]),
         },
         humidity: {
             time: index,
-            humidity: parseFloat(array[3])
-        },
-        lightIntensity: {
-            time: index,
-            lightIntensity: parseFloat(array[4])
+            humidityCanSat: parseFloat(array[6]),
+            humidityExternal: parseFloat(array[7]),
         },
         altitude: {
             time: index,
-            altitude: parseFloat(array[5]),
+            altitudeCanSat: parseFloat(array[10]),
+            altitudeExternal: parseFloat(array[11]),
         },
-        numberOfSatellites: parseInt(array[6]),
-        year: parseInt(array[7]),
-        month: parseInt(array[8]),
-        day: parseInt(array[9]),
-        hour: parseInt(array[10]),
-        minute: parseInt(array[11]),
-        second: parseInt(array[12]),
+        numberOfSatellites: parseInt(array[12]),        
         lat: parseGPS(array[13], array[15]),
         lng: parseGPS(array[14], array[16]),
+        co2: {
+            SCD30: parseFloat(array[17]),
+            CCS811: parseFloat(array[18]),
+        },
+        tvoc: parseFloat(array[19]),
+        o2Concentration: parseFloat(array[20]),
     };
 
     return result;
