@@ -101,9 +101,12 @@ const transformToDataObject = (array, index) => {
         },
         tvoc: parseFloat(array[19]),
         o2Concentration: parseFloat(array[20]),
+        radioStrength: calculateSignalStrength(array[21]),
     };
 
     return result;
 }
 
 const parseGPS = (latInt, lat) => Math.floor(parseInt(latInt) / 100) + ((parseInt(latInt) % 100 + parseFloat('0.' + lat)) / 60);
+
+const calculateSignalStrength = dbm => 10 * Math.log(Math.pow(10, dbm/10) * 1000);

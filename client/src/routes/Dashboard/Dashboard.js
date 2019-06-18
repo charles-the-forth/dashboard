@@ -83,7 +83,7 @@ class Dashboard extends Component {
     };
 
     this.state.socket.on('data updated', ({
-      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, o2Concentration
+      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, o2Concentration, radioStrength
     }) => {
       this.setState({
         messageId, numberOfSatellites,
@@ -98,6 +98,7 @@ class Dashboard extends Component {
         co2: append(co2, this.state.co2),
         tvoc: append(tvoc, this.state.tvoc),
         o2Concentration: append(o2Concentration, this.state.o2Concentration),
+        radioStrength
       });
     });
   }
@@ -159,6 +160,11 @@ class Dashboard extends Component {
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Paper className={classes.paper}>
               <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Paper className={classes.paper}>
+              <p>{this.state.radioStrength}</p>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
