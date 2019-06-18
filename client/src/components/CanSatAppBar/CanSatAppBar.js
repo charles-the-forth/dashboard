@@ -25,7 +25,6 @@ const styles = theme => ({
         justifyContent: 'flex-end',
         marginTop: '10px',
         width: '212px',
-        opacity: 0
     }
 });
 

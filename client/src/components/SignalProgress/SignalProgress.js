@@ -20,7 +20,7 @@ const SignalProgress = ({ classes, signal }) => (
     <div className={classes.progressContainer}>
         <LinearProgress variant="determinate" value={signal} className={classes.progress} />
         <Typography align="center" variant="body1" className={classes.signalLabel}>
-            Signál
+            Signal
         </Typography>
     </div>
 );

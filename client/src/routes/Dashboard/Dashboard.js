@@ -104,7 +104,7 @@ class Dashboard extends Component {
         co2: append(co2, this.state.co2),
         tvoc: append(tvoc, this.state.tvoc),
         o2Concentration: append(o2Concentration, this.state.o2Concentration),
-        radioStrength
+        signal: processRadioStrength(radioStrength)
       });
     });
   }
@@ -112,10 +112,6 @@ class Dashboard extends Component {
   updateDimensions() {
     const spacingAndStuffLikeThat = 184;
     const titleHeight = 68;
-    const topAndBottomSpacing = 24;
-    const padding = 12;
-    const marginTop = 16;
-    const headingMarginBottom = 3;
 
     this.setState(pipe(
       assocPath(['config', 'map', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
@@ -139,10 +135,9 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.config);
     return (
       <div>
-        <CanSatAppBar signal={80}>
+        <CanSatAppBar signal={this.state.signal}>
           <Typography
             component="h1"
             variant="h6"
@@ -202,11 +197,16 @@ class Dashboard extends Component {
   }
 }
 
-const formatDate = (day, month, year) => {
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  return day + ' ' + months[month] + ' ' + year;
-};
-
-const formatTime = (hour, minute, second) => ((hour < 10) ? '0' + hour.toString() : hour) + ':' + ((minute < 10) ? ('0' + minute.toString()): minute) + ':' + ((second < 10) ? ('0' + second.toString()): second);
+const processRadioStrength = radioStrength => {
+  if (radioStrength > -45) {
+    return 100;
+  } else if (radioStrength > -60) {
+    return 66;
+  } else if (radioStrength > -90) {
+    return 33;
+  } else {
+    return 0;
+  }
+}
 
 export default withStyles(styles)(Dashboard);
