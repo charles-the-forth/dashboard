@@ -11,7 +11,8 @@ const PressureChart = ({ config, data }) => (
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className='chart'>
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis />
-                <Area name='Tlak' type='monotone' dataKey='pressure' stroke='#000063' fill='#6746C3' />
+                <Area name='External' type='monotone' dataKey='pressureExternal' stroke='#000063' fill='#6746C3' />
+                <Area name='CanSat' type='monotone' dataKey='pressureCanSat' stroke='#000063' fill='#6746C3' />
             </AreaChart>
         </ResponsiveContainer>
     </div>
