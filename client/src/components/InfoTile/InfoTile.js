@@ -33,8 +33,8 @@ const styles = theme => ({
     }
 });
 
-const InfoTile = withStyles(styles)(({ icon, title, text, classes }) => (
-    <Paper className={classes.paper}>
+const InfoTile = withStyles(styles)(({ icon, title, text, classes, config }) => (
+    <Paper className={classes.paper} style={{height: config.height + 'px'}}>
         <Typography variant="h6" gutterBottom className={classes.title}>{title}</Typography>
         <div className={classes.row}>
             <Icon className={classes.icon}>{icon}</Icon>
