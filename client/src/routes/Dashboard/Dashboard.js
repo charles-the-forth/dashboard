@@ -7,6 +7,7 @@ import LightIntensityChart from '../../components/LightIntensityChart/LightInten
 import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
 import OxygenConcentrationChart from '../../components/OxygenConcentrationChart/OxygenConcentrationChart';
 import CO2ConcentrationChart from '../../components/CO2ConcentrationChart/CO2ConcentrationChart';
+import SpectroscopeChart from '../../components/SpectroscopeChart/SpectroscopeChart';
 import MapTile from '../../components/MapTile/MapTile';
 import { append, pathOr, assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
@@ -60,6 +61,50 @@ class Dashboard extends Component {
       co2: [],
       tvoc: [],
       oxygenConcentration: [],
+      spectroscope: [
+        {
+          name: 'a', value: 4000,
+        },
+        {
+          name: 'b', value: 3000,
+        },
+        {
+          name: 'c', value: 2000,
+        },
+        {
+          name: 'd', value: 2780,
+        },
+        {
+          name: 'e', value: 1890,
+        },
+        {
+          name: 'f', value: 2390,
+        },
+        {
+          name: 'g', value: 3490,
+        },
+        {
+          name: 'h', value: 4000,
+        },
+        {
+          name: 'r', value: 3000,
+        },
+        {
+          name: 'i', value: 2000,
+        },
+        {
+          name: 's', value: 2780,
+        },
+        {
+          name: 'r', value: 1890,
+        },
+        {
+          name: 't', value: 2390,
+        },
+        {
+          name: 'u', value: 3490,
+        },
+      ],
       config: {
         map: {},
         temperature: {
@@ -84,6 +129,50 @@ class Dashboard extends Component {
         co2: {
           maxShowedValues: 20
         },
+        spectroscope: {
+          a: {
+            color: '#7e00db',
+          },
+          b: {
+            color: '#2300ff',
+          },
+          c: {
+            color: '#007bff',
+          },
+          d: {
+            color: '#00eaff',
+          },
+          e: {
+            color: '#00ff00',
+          },
+          f: {
+            color: '#70ff00',
+          },
+          g: {
+            color: '#c3ff00',
+          },
+          h: {
+            color: '#ffef00',
+          },
+          r: {
+            color: '#ff9b00',
+          },
+          i: {
+            color: '#ff0000',
+          },
+          s: {
+            color: '#ff0000',
+          },
+          r: {
+            color: '#f60000',
+          },
+          t: {
+            color: '#c80000',
+          },
+          u: {
+            color: '#8d0000',
+          }
+        }
       },
       center: {
         lat: 50.03718,
@@ -93,7 +182,7 @@ class Dashboard extends Component {
     };
 
     this.state.socket.on('data updated', ({
-      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength
+      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength, spectroscope
     }) => {
       this.setState({
         messageId, numberOfSatellites,
@@ -108,7 +197,8 @@ class Dashboard extends Component {
         co2: append(co2, this.state.co2),
         tvoc: append(tvoc, this.state.tvoc),
         oxygenConcentration: append({oxygenConcetration}, this.state.oxygenConcentration),
-        signal: processRadioStrength(radioStrength)
+        signal: processRadioStrength(radioStrength),
+        spectroscope: processSpectroscope(spectroscope),
       });
     });
   }
@@ -183,7 +273,7 @@ class Dashboard extends Component {
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Paper className={classes.paper}>
-              <HumidityChart data={this.state.humidity} config={this.state.config.spectroscope} />
+              <SpectroscopeChart data={this.state.spectroscope} config={this.state.config.spectroscope} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
@@ -208,5 +298,50 @@ const processRadioStrength = radioStrength => {
     return 0;
   }
 }
+
+const processSpectroscope = spectroscope => [
+  {
+    name: 'a', value: spectroscope.a,
+  },
+  {
+    name: 'b', value: spectroscope.b,
+  },
+  {
+    name: 'c', value: spectroscope.c,
+  },
+  {
+    name: 'd', value: spectroscope.d,
+  },
+  {
+    name: 'e', value: spectroscope.e,
+  },
+  {
+    name: 'f', value: spectroscope.f,
+  },
+  {
+    name: 'g', value: spectroscope.g,
+  },
+  {
+    name: 'h', value: spectroscope.h,
+  },
+  {
+    name: 'r', value: spectroscope.r,
+  },
+  {
+    name: 'i', value: spectroscope.i,
+  },
+  {
+    name: 's', value: spectroscope.s,
+  },
+  {
+    name: 'r', value: spectroscope.r,
+  },
+  {
+    name: 't', value: spectroscope.t,
+  },
+  {
+    name: 'u', value: spectroscope.u,
+  },
+];
 
 export default withStyles(styles)(Dashboard);
