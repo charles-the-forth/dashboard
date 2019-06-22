@@ -36,12 +36,8 @@ const styles = theme => ({
     aligContent: 'center',
   },
   mainGrid: {
-    margin: '12px',
+    margin: '10px',
     width: 'calc(100% - 32px)'
-  },
-  infoTileGrid: {
-    display: 'grid',
-    gridRowGap: '16px'
   },
   bottomPaper: {
     marginTop: '16px'
@@ -184,6 +180,7 @@ class Dashboard extends Component {
     this.state.socket.on('data updated', ({
       messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength, spectroscope
     }) => {
+      console.log(this.state);
       this.setState({
         messageId, numberOfSatellites,
         center: {
@@ -277,9 +274,9 @@ class Dashboard extends Component {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
-            <Paper className={classes.paper}>
-              <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
-            </Paper>
+              <Paper className={classes.paper}>
+                <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
+              </Paper>
           </Grid>
         </Grid>
       </div >

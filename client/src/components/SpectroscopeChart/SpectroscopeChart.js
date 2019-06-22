@@ -2,9 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { BarChart, Bar, Cell, ResponsiveContainer } from 'recharts';
 
-const SpectroscopeChart = ({ config, data }) => {
-    console.log(data);
-    return (
+const SpectroscopeChart = ({ config, data }) => (
     <div className="chart-container">
         <Typography component="h1" variant="h6" color="inherit" noWrap>Spectroscope</Typography>
         <ResponsiveContainer width="100%" height={config.height}>
@@ -17,7 +15,6 @@ const SpectroscopeChart = ({ config, data }) => {
             </BarChart>
         </ResponsiveContainer>
     </div>
-    );
-                };
+);
 
 export default SpectroscopeChart;
