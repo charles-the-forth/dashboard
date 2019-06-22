@@ -59,46 +59,46 @@ class Dashboard extends Component {
       oxygenConcentration: [],
       spectroscope: [
         {
-          name: 'a', value: 4000,
+          name: 'a', value: 4000, wavelength: 410,
         },
         {
-          name: 'b', value: 3000,
+          name: 'b', value: 3000, wavelength: 435,
         },
         {
-          name: 'c', value: 2000,
+          name: 'c', value: 2000, wavelength: 460,
         },
         {
-          name: 'd', value: 2780,
+          name: 'd', value: 2780, wavelength: 485,
         },
         {
-          name: 'e', value: 1890,
+          name: 'e', value: 1890, wavelength: 510,
         },
         {
-          name: 'f', value: 2390,
+          name: 'f', value: 2390, wavelength: 535,
         },
         {
-          name: 'g', value: 3490,
+          name: 'g', value: 3490, wavelength: 560,
         },
         {
-          name: 'h', value: 4000,
+          name: 'h', value: 4000, wavelength: 585,
         },
         {
-          name: 'r', value: 3000,
+          name: 'r', value: 3000, wavelength: 610,
         },
         {
-          name: 'i', value: 2000,
+          name: 'i', value: 2000, wavelength: 645,
         },
         {
-          name: 's', value: 2780,
+          name: 's', value: 2780, wavelength: 680,
         },
         {
-          name: 'r', value: 1890,
+          name: 'j', value: 1890, wavelength: 705,
         },
         {
-          name: 't', value: 2390,
+          name: 't', value: 2390, wavelength: 730,
         },
         {
-          name: 'u', value: 3490,
+          name: 'u', value: 3490, wavelength: 760,
         },
       ],
       config: {
@@ -128,45 +128,59 @@ class Dashboard extends Component {
         spectroscope: {
           a: {
             color: '#7e00db',
+            wavelength: 410,
           },
           b: {
             color: '#2300ff',
+            wavelength: 435,
           },
           c: {
             color: '#007bff',
+            wavelength: 460,
           },
           d: {
             color: '#00eaff',
+            wavelength: 485,
           },
           e: {
             color: '#00ff00',
+            wavelength: 510,
           },
           f: {
             color: '#70ff00',
+            wavelength: 535,
           },
           g: {
             color: '#c3ff00',
+            wavelength: 560,
           },
           h: {
             color: '#ffef00',
+            wavelength: 585,
           },
           r: {
             color: '#ff9b00',
+            wavelength: 610,
           },
           i: {
             color: '#ff0000',
+            wavelength: 645,
           },
           s: {
             color: '#ff0000',
+            wavelength: 680,
           },
-          r: {
+          j: {
             color: '#f60000',
+            wavelength: 705,
           },
           t: {
             color: '#c80000',
+            wavelength: 730,
           },
           u: {
             color: '#8d0000',
+            wavelength: 760,
           }
         }
       },
