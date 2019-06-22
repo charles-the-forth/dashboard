@@ -5,8 +5,9 @@ import PressureChart from '../../components/PressureChart/PressureChart';
 import HumidityChart from '../../components/HumidityChart/HumidityChart';
 import LightIntensityChart from '../../components/LightIntensityChart/LightIntensityChart';
 import AltitudeChart from '../../components/AltitudeChart/AltitudeChart';
+import OxygenConcentrationChart from '../../components/OxygenConcentrationChart/OxygenConcentrationChart';
+import CO2ConcentrationChart from '../../components/CO2ConcentrationChart/CO2ConcentrationChart';
 import MapTile from '../../components/MapTile/MapTile';
-import InfoTile from '../../components/InfoTile/InfoTile';
 import { append, pathOr, assocPath, pipe } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
@@ -58,7 +59,7 @@ class Dashboard extends Component {
       altitude: [],
       co2: [],
       tvoc: [],
-      o2Concentration: [],
+      oxygenConcentration: [],
       config: {
         map: {},
         temperature: {
@@ -76,10 +77,13 @@ class Dashboard extends Component {
         altitude: {
           maxShowedValues: 20
         },
-        infoTile: {},
         spectroscope: {},
-        oxygenConcentration: {},
-        co2Concentration: {},
+        oxygenConcentration: {
+          maxShowedValues: 20
+        },
+        co2: {
+          maxShowedValues: 20
+        },
       },
       center: {
         lat: 50.03718,
@@ -89,7 +93,7 @@ class Dashboard extends Component {
     };
 
     this.state.socket.on('data updated', ({
-      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, o2Concentration, radioStrength
+      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength
     }) => {
       this.setState({
         messageId, numberOfSatellites,
@@ -103,7 +107,7 @@ class Dashboard extends Component {
         altitude: append(altitude, this.state.altitude),
         co2: append(co2, this.state.co2),
         tvoc: append(tvoc, this.state.tvoc),
-        o2Concentration: append(o2Concentration, this.state.o2Concentration),
+        oxygenConcentration: append({oxygenConcetration}, this.state.oxygenConcentration),
         signal: processRadioStrength(radioStrength)
       });
     });
@@ -119,11 +123,11 @@ class Dashboard extends Component {
       assocPath(['config', 'pressure', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 43) / 2),
       assocPath(['config', 'humidity', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 43) / 2),
       assocPath(['config', 'lightIntensity', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 43) / 2),
-      assocPath(['config', 'altitude', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 43) / 2),
+      assocPath(['config', 'altitude', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - 32),
       assocPath(['config', 'infoTile', 'height'], (((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight) / 2) / 2),
       assocPath(['config', 'spectroscope', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2 - 32),
       assocPath(['config', 'oxygenConcentration', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 43) / 2),
-      assocPath(['config', 'co2Concentration', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 43) / 2),
+      assocPath(['config', 'co2', 'height'], ((window.innerHeight - spacingAndStuffLikeThat) / 2 - titleHeight - 43) / 2),
       assocPath(['config', 'map', 'height'], (window.innerHeight - spacingAndStuffLikeThat) / 2),
     )(this.state));
   }
@@ -171,10 +175,10 @@ class Dashboard extends Component {
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
             <Paper className={classes.paper}>
-              <HumidityChart data={this.state.humidity} config={this.state.config.oxygenConcentration} />
+              <OxygenConcentrationChart data={this.state.oxygenConcentration} config={this.state.config.oxygenConcentration} />
             </Paper>
             <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
-              <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.co2Concentration} />
+              <CO2ConcentrationChart data={this.state.co2} config={this.state.config.co2} />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
@@ -183,11 +187,7 @@ class Dashboard extends Component {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6} lg={4}>
-            <InfoTile config={this.state.config.infoTile} icon={'message'} title='Message ID' text={this.state.messageId} />
-            <div className={classes.bottomPaper}>
-              <InfoTile config={this.state.config.infoTile} icon={'satellite'} title='Number of satellites' text={this.state.numberOfSatellites} />
-            </div>
-            <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
+            <Paper className={classes.paper}>
               <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
             </Paper>
           </Grid>

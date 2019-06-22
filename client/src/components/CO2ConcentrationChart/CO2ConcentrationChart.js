@@ -3,19 +3,19 @@ import Typography from '@material-ui/core/Typography';
 import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { takeLast } from 'ramda';
 
-const PressureChart = ({ config, data }) => (
+const CO2ConcentrationChart = ({ config, data }) => (
     <div className="chart-container">
-        <Typography component="h1" variant="h6" color="inherit" noWrap>Pressure</Typography>
+        <Typography component="h1" variant="h6" color="inherit" noWrap>CO2 concentration</Typography>
         <ResponsiveContainer width="100%" height={config.height}>
             <AreaChart data={takeLast(config.maxShowedValues, data)}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className='chart'>
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis />
-                <Area name='External' type='monotone' dataKey='pressureExternal' stroke='#000063' fill='#6746C3' />
-                <Area name='CanSat' type='monotone' dataKey='pressureCanSat' stroke='#0d47a1' fill='#64b5f6' />
+                <Area name='SCD30' type='monotone' dataKey='SCD30' stroke='#000063' fill='#6746C3' />
+                <Area name='CCS811' type='monotone' dataKey='CCS811' stroke='#000063' fill='#6746C3' />
             </AreaChart>
         </ResponsiveContainer>
     </div>
-);
+); 
 
-export default PressureChart;
+export default CO2ConcentrationChart;

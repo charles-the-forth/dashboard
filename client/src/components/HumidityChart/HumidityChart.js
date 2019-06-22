@@ -12,7 +12,8 @@ const HumidityChart = ({ config, data }) => (
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis />
                 <Area name='External' type='monotone' dataKey='humidityExternal' stroke='#007AC1' fill='#67DAFF' />
-                <Area name='CanSat' type='monotone' dataKey='humidityCanSat' stroke='#007AC1' fill='#67DAFF' />
+                <Area name='CanSat' type='monotone' dataKey='humidityCanSat' stroke='#01579b' fill='#4fc3f7' />
+                <Area name='SCD30' type='monotone' dataKey='humiditySCD30' stroke='#004d40' fill='#4db6ac' />
             </AreaChart>
         </ResponsiveContainer>        
     </div>

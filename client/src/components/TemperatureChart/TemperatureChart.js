@@ -12,7 +12,10 @@ const TemperatureChart = ({ config, data }) => (
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis />
                 <Area name='CanSat' type='monotone' dataKey='temperatureCanSat' stroke='#FFA000' fill='#FFC107' />
-                <Area name='External' type='monotone' dataKey='temperatureExternal' stroke='#FFC107' fill='#FFA000' />
+                <Area name='External' type='monotone' dataKey='temperatureExternal' stroke='#dd2c00' fill='#ff7043' />
+                <Area name='MPU' type='monotone' dataKey='temperatureMPU' stroke='#ff3d00' fill='#ffccbc' />
+                <Area name='SCD30' type='monotone' dataKey='tempSCD30' stroke='#ff6f00' fill='#ffca28' />
+                <Area name='Ambient' type='monotone' dataKey='ambientTemp' stroke='#827717' fill='#aeea00' />
             </AreaChart>
         </ResponsiveContainer>        
     </div>
