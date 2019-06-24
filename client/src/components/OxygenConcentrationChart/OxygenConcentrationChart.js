@@ -1,11 +1,13 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import { AreaChart, Area, YAxis, CartesianGrid, ResponsiveContainer, Label, Legend } from 'recharts';
 import { takeLast } from 'ramda';
-import Typography from '@material-ui/core/Typography';
 
-const HumidityChart = ({ config, data }) => (
+const OxygenConcentrationChart = ({ config, data }) => {
+    console.log(data);
+    return (
     <div className="chart-container">
-        <Typography component="h1" variant="h6" color="inherit" noWrap>Humidity</Typography>
+        <Typography component="h1" variant="h6" color="inherit" noWrap>Oxygen concentration</Typography>
         <ResponsiveContainer width="100%" height={config.height}>
             <AreaChart data={takeLast(config.maxShowedValues, data)}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className='chart'>
@@ -13,13 +15,12 @@ const HumidityChart = ({ config, data }) => (
                 <YAxis>
                     <Label value="%" offset={20} position="insideLeft" angle={-90}/>
                 </YAxis>
-                <Area name='External' type='monotone' dataKey='humidityExternal' stroke='#007AC1' fill='#67DAFF' />
-                <Area name='CanSat' type='monotone' dataKey='humidityCanSat' stroke='#01579b' fill='#4fc3f7' />
-                <Area name='SCD30' type='monotone' dataKey='humiditySCD30' stroke='#004d40' fill='#4db6ac' />
-                <Legend verticalAlign="bottom"/>
+                <Area name='O2' type='monotone' dataKey='oxygenConcetration' stroke='#311b92' fill='#6746C3' />
+                <Legend verticalAlign="bottom" />
             </AreaChart>
-        </ResponsiveContainer>        
+        </ResponsiveContainer>
     </div>
 );
+    }; 
 
-export default HumidityChart;
+export default OxygenConcentrationChart;

@@ -1,11 +1,8 @@
 # Data Dashboard
 This is our single page web application for data visualisation. It is written in ReactJS on client side. For nice design we've chosen Material-UI and for charts we've used Recharts. On backend we are using ExpressJS.
 
-## Manager
-This route is used to created new measurement. You can also explore your previous measurement.
-
 ## Chart Dashboard
-On this route you can see overall charts of your experiment (temperature, pressure, speed, altitude and location). By clicking at each tile you can get to detail section of each parametr.
+Simple chart dashboard used for data visualisation of data from our CanSat mission.
 
 ## Dependencies
 - NodeJS

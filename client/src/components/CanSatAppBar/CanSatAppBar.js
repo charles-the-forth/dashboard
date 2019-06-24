@@ -13,6 +13,17 @@ const styles = theme => ({
     logo: {
         width: '36px',
         paddingRight: '8px'
+    },
+    grow: {
+        display: 'flex',
+        flexGrow: '1',
+        justifyContent: 'center'
+    },
+    signalContainer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        marginTop: '10px',
+        width: '212px',
     }
 });
 

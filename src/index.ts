@@ -4,7 +4,7 @@ import { Server } from 'http';
 import { Socket } from 'net';
 import * as SerialPort from 'serialport';
 import * as admin from 'firebase-admin';
-const serviceAccount = require('../../../Downloads/cansatweb-1547364100927-firebase-adminsdk-b30cq-ad9f633c25.json');
+const serviceAccount = require('../../cansatweb-1547364100927-firebase-adminsdk-b30cq-ad9f633c25.json');
 
 const app = express();
 const server = new Server(app);
@@ -68,7 +68,7 @@ const connectToPort = portName => {
 
                 const dataObj = transformToDataObject(data.split(/[=;]/), index);
 
-                db.collection('messages').add(dataObj);              
+                db.collection('messagesItaly').add(dataObj);              
                 io.sockets.emit('data updated', dataObj);
             }
             index++;
@@ -81,38 +81,111 @@ server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
 const transformToDataObject = (array, index) => {
     const result = {
         messageId: parseInt(array[0]),
+        lightIntensity: {
+            time: index,
+            lightIntensity: parseFloat(array[1])
+        },
+        uvIndex: parseFloat(array[2]),
         temperature: {
             time: index,
-            temperature: parseFloat(array[1])
-        },
-        pressure: {
-            time: index,
-            pressure: parseFloat(array[2])
+            temperatureCanSat: parseFloat(array[3]),
+            temperatureMPU: parseFloat(array[4]),
+            temperatureExternal: parseFloat(array[5]),
+            tempSCD30: parseFloat(array[6]),
+            ambientTemp: parseFloat(array[7]),
         },
         humidity: {
             time: index,
-            humidity: parseFloat(array[3])
+            humidityCanSat: parseFloat(array[9]),
+            humidityExternal: parseFloat(array[10]),
+            humiditySCD30: parseFloat(array[11]),
         },
-        lightIntensity: {
+        pressure: {
             time: index,
-            lightIntensity: parseFloat(array[4])
+            pressureCanSat: parseFloat(array[12]),
+            pressureExternal: parseFloat(array[13]),
         },
         altitude: {
             time: index,
-            altitude: parseFloat(array[5]),
+            altitudeCanSat: parseFloat(array[14]),
+            altitudeExternal: parseFloat(array[15]),
         },
-        numberOfSatellites: parseInt(array[6]),
-        year: parseInt(array[7]),
-        month: parseInt(array[8]),
-        day: parseInt(array[9]),
-        hour: parseInt(array[10]),
-        minute: parseInt(array[11]),
-        second: parseInt(array[12]),
-        lat: parseGPS(array[13], array[15]),
-        lng: parseGPS(array[14], array[16]),
+        accX: {
+            time: index,
+            accX: parseFloat(array[16]),
+        },
+        accY: {
+            time: index,
+            accY: parseFloat(array[17]),
+        },
+        accZ: {
+            time: index,
+            accZ: parseFloat(array[18]),
+        },
+        rotX: {
+            time: index,
+            accX: parseFloat(array[19]),
+        },
+        rotY: {
+            time: index,
+            accY: parseFloat(array[20]),
+        },
+        rotZ: {
+            time: index,
+            accZ: parseFloat(array[21]),
+        },
+        magX: {
+            time: index,
+            magX: parseFloat(array[22]),
+        },
+        magY: {
+            time: index,
+            magY: parseFloat(array[23]),
+        },
+        magZ: {
+            time: index,
+            magZ: parseFloat(array[24]),
+        },
+        lat: parseGPS(array[25], array[27]),
+        lng: parseGPS(array[26], array[28]),
+        co2: {
+            time: index,
+            SCD30: parseFloat(array[29]),
+            CCS811: parseFloat(array[30]),
+        },
+        tvoc: parseFloat(array[31]),
+        oxygenConcetration: {
+            time: index,
+            oxygenConcetration: parseFloat(array[32]),
+        },
+        spectroscope: {
+            time: index,
+            a: parseFloat(array[33]),
+            b: parseFloat(array[34]),
+            c: parseFloat(array[35]),
+            d: parseFloat(array[36]),
+            e: parseFloat(array[37]),
+            f: parseFloat(array[38]),
+            g: parseFloat(array[39]),
+            h: parseFloat(array[40]),
+            i: parseFloat(array[41]),
+            j: parseFloat(array[42]),
+            k: parseFloat(array[43]),
+            l: parseFloat(array[44]),
+            r: parseFloat(array[45]),
+            s: parseFloat(array[46]),
+            t: parseFloat(array[47]),
+            u: parseFloat(array[48]),
+            v: parseFloat(array[49]),
+            w: parseFloat(array[50]),
+        },
+        numberOfSatellites: parseInt(array[51]),
+        radioStrength: calculateSignalStrength(array[52]),
     };
 
     return result;
 }
 
 const parseGPS = (latInt, lat) => Math.floor(parseInt(latInt) / 100) + ((parseInt(latInt) % 100 + parseFloat('0.' + lat)) / 60);
+
+const calculateSignalStrength = dbm => 10 * Math.log(Math.pow(10, dbm/10) * 1000);
