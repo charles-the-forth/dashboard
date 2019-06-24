@@ -194,7 +194,6 @@ class Dashboard extends Component {
     this.state.socket.on('data updated', ({
       messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength, spectroscope
     }) => {
-      console.log(this.state);
       this.setState({
         messageId, numberOfSatellites,
         center: {
@@ -205,7 +204,7 @@ class Dashboard extends Component {
         humidity: append(humidity, this.state.humidity),
         lightIntensity: append(lightIntensity, this.state.lightIntensity),
         altitude: append(altitude, this.state.altitude),
-        co2: append(co2, this.state.co2),
+        co2: append(co2, processCO2(this.state.co2)),
         tvoc: append(tvoc, this.state.tvoc),
         oxygenConcentration: append({oxygenConcetration}, this.state.oxygenConcentration),
         signal: processRadioStrength(radioStrength),
@@ -302,9 +301,11 @@ const processRadioStrength = radioStrength => {
   if (radioStrength > -45) {
     return 100;
   } else if (radioStrength > -60) {
-    return 66;
+    return 75;
   } else if (radioStrength > -90) {
-    return 33;
+    return 50;
+  } else if (radioStrength > -120) {
+    return 25;
   } else {
     return 0;
   }
@@ -354,5 +355,11 @@ const processSpectroscope = spectroscope => [
     name: 'u', value: spectroscope.u,
   },
 ];
+
+const processCO2 = ({time, SCD30, CCS811}) => ({
+  time,
+  SCD30: 100 * SCD30 / 1000000,
+  CCS811: 100 * CCS811 / 1000000,
+});
 
 export default withStyles(styles)(Dashboard);
