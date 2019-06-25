@@ -15,7 +15,7 @@ const OxygenConcentrationChart = ({ config, data }) => {
                 <YAxis domain={[0, 100]}>
                     <Label value="%" offset={20} position="insideLeft" angle={-90}/>
                 </YAxis>
-                <Area name='O2' type='monotone' dataKey='oxygenConcetration' stroke='#311b92' fill='#6746C3' />
+                <Area name='O2' type='monotone' dataKey='oxygenConcentration' stroke='#311b92' fill='#6746C3' />
             </AreaChart>
         </ResponsiveContainer>
     </div>

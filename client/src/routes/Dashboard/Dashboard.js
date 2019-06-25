@@ -9,7 +9,7 @@ import OxygenConcentrationChart from '../../components/OxygenConcentrationChart/
 import CO2ConcentrationChart from '../../components/CO2ConcentrationChart/CO2ConcentrationChart';
 import SpectroscopeChart from '../../components/SpectroscopeChart/SpectroscopeChart';
 import MapTile from '../../components/MapTile/MapTile';
-import { append, pathOr, assocPath, pipe } from 'ramda';
+import { append, pathOr, assocPath, pipe, takeLast } from 'ramda';
 import { withStyles } from '@material-ui/core/styles';
 import CanSatAppBar from '../../components/CanSatAppBar/CanSatAppBar';
 import Paper from '@material-ui/core/Paper';
@@ -146,21 +146,20 @@ class Dashboard extends Component {
 
     this.state.socket.on('data updated', (data) => {
       const {
-        messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength, spectroscope
+        messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcentration, radioStrength, spectroscope
       } = data;
       this.setState({
         messageId, numberOfSatellites,
         center: {
           lat, lng
         },
-        temperature: append(temperature, this.state.temperature),
-        pressure: append(pressure, this.state.pressure),
-        humidity: append(humidity, this.state.humidity),
-        lightIntensity: append(lightIntensity, this.state.lightIntensity),
-        altitude: append(altitude, this.state.altitude),
-        co2: append(processCO2(co2), this.state.co2),
-        tvoc: append(tvoc, this.state.tvoc),
-        oxygenConcentration: append(oxygenConcetration, this.state.oxygenConcentration),
+        temperature: takeLast(this.state.config.temperature.maxShowedValues, append(temperature, this.state.temperature)),
+        pressure: takeLast(this.state.config.pressure.maxShowedValues, append(pressure, this.state.pressure)),
+        humidity: takeLast(this.state.config.humidity.maxShowedValues, append(humidity, this.state.humidity)),
+        lightIntensity: takeLast(this.state.config.lightIntensity.maxShowedValues, append(lightIntensity, this.state.lightIntensity)),
+        altitude: takeLast(this.state.config.altitude.maxShowedValues, append(altitude, this.state.altitude)),
+        co2: takeLast(this.state.config.co2.maxShowedValues, append(processCO2(co2), this.state.co2)),
+        oxygenConcentration: takeLast(this.state.config.oxygenConcentration.maxShowedValues, append(oxygenConcentration, this.state.oxygenConcentration)),
         signal: processRadioStrength(radioStrength),
         spectroscope: processSpectroscope(spectroscope, this.state.config.spectroscope),
       });
@@ -193,7 +192,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state);
+    
     return (
       <div>
         <CanSatAppBar signal={this.state.signal}>

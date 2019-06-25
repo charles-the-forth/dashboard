@@ -157,9 +157,9 @@ const transformToDataObject = (array, index) => {
             CCS811: parseFloat(array[30]),
         },
         tvoc: parseFloat(array[31]),
-        oxygenConcetration: {
+        oxygenConcentration: {
             time: index,
-            oxygenConcetration: parseFloat(array[32]),
+            oxygenConcentration: parseFloat(array[32]),
         },
         spectroscope: {
             time: index,
