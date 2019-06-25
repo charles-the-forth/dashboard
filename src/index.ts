@@ -157,17 +157,11 @@ const transformToDataObject = (array, index) => {
             h: parseFloat(array[40]),
             i: parseFloat(array[41]),
             j: parseFloat(array[42]),
-            k: parseFloat(array[43]),
-            l: parseFloat(array[44]),
-            r: parseFloat(array[45]),
-            s: parseFloat(array[46]),
-            t: parseFloat(array[47]),
-            u: parseFloat(array[48]),
-            v: parseFloat(array[49]),
-            w: parseFloat(array[50]),
+            r: parseFloat(array[43]),
+            s: parseFloat(array[44]),
         },
-        numberOfSatellites: parseInt(array[51]),
-        radioStrength: calculateSignalStrength(array[52]),
+        numberOfSatellites: parseInt(array[45]),
+        radioStrength: calculateSignalStrength(array[46]),
     };
 
     return result;

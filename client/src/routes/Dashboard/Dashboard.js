@@ -97,9 +97,6 @@ class Dashboard extends Component {
         {
           name: 't', value: 2390, wavelength: 730,
         },
-        {
-          name: 'u', value: 3490, wavelength: 760,
-        },
       ],
       config: {
         map: {},
@@ -177,10 +174,6 @@ class Dashboard extends Component {
           t: {
             color: '#c80000',
             wavelength: 730,
-          },
-          u: {
-            color: '#8d0000',
-            wavelength: 760,
           }
         }
       },
@@ -191,9 +184,10 @@ class Dashboard extends Component {
       socket: openSocket('http://localhost:5000', { transports: ['websocket'] })
     };
 
-    this.state.socket.on('data updated', ({
-      messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength, spectroscope
-    }) => {
+    this.state.socket.on('data updated', (data) => {
+      const {
+        messageId, numberOfSatellites, temperature, lat, lng, pressure, humidity, lightIntensity, altitude, co2, tvoc, oxygenConcetration, radioStrength, spectroscope
+      } = data;
       this.setState({
         messageId, numberOfSatellites,
         center: {
@@ -208,8 +202,10 @@ class Dashboard extends Component {
         tvoc: append(tvoc, this.state.tvoc),
         oxygenConcentration: append({oxygenConcetration}, this.state.oxygenConcentration),
         signal: processRadioStrength(radioStrength),
-        spectroscope: processSpectroscope(spectroscope),
+        spectroscope: processSpectroscope(spectroscope, this.state.config.spectroscope),
       });
+
+      console.log(data);
     });
   }
 
@@ -311,48 +307,45 @@ const processRadioStrength = radioStrength => {
   }
 }
 
-const processSpectroscope = spectroscope => [
+const processSpectroscope = (spectroscope, config) => [
   {
-    name: 'a', value: spectroscope.a,
+    name: 'a', value: spectroscope.a, wavelength: config.a.wavelength
   },
   {
-    name: 'b', value: spectroscope.b,
+    name: 'b', value: spectroscope.b, wavelength: config.b.wavelength
   },
   {
-    name: 'c', value: spectroscope.c,
+    name: 'c', value: spectroscope.c, wavelength: config.c.wavelength
   },
   {
-    name: 'd', value: spectroscope.d,
+    name: 'd', value: spectroscope.d, wavelength: config.d.wavelength
   },
   {
-    name: 'e', value: spectroscope.e,
+    name: 'e', value: spectroscope.e, wavelength: config.e.wavelength
   },
   {
-    name: 'f', value: spectroscope.f,
+    name: 'f', value: spectroscope.f, wavelength: config.f.wavelength
   },
   {
-    name: 'g', value: spectroscope.g,
+    name: 'g', value: spectroscope.g, wavelength: config.g.wavelength
   },
   {
-    name: 'h', value: spectroscope.h,
+    name: 'h', value: spectroscope.h, wavelength: config.h.wavelength
   },
   {
-    name: 'r', value: spectroscope.r,
+    name: 'r', value: spectroscope.r, wavelength: config.r.wavelength
   },
   {
-    name: 'i', value: spectroscope.i,
+    name: 'i', value: spectroscope.i, wavelength: config.i.wavelength
   },
   {
-    name: 's', value: spectroscope.s,
+    name: 's', value: spectroscope.s, wavelength: config.s.wavelength
   },
   {
-    name: 'r', value: spectroscope.r,
+    name: 'r', value: spectroscope.r, wavelength: config.r.wavelength
   },
   {
-    name: 't', value: spectroscope.t,
-  },
-  {
-    name: 'u', value: spectroscope.u,
+    name: 't', value: spectroscope.t, wavelength: config.t.wavelength
   },
 ];
 
