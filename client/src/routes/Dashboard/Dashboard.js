@@ -74,50 +74,7 @@ class Dashboard extends Component {
       co2: [],
       tvoc: [],
       oxygenConcentration: [],
-      spectroscope: [
-        {
-          name: 'a', value: 4000, wavelength: 410,
-        },
-        {
-          name: 'b', value: 3000, wavelength: 435,
-        },
-        {
-          name: 'c', value: 2000, wavelength: 460,
-        },
-        {
-          name: 'd', value: 2780, wavelength: 485,
-        },
-        {
-          name: 'e', value: 1890, wavelength: 510,
-        },
-        {
-          name: 'f', value: 2390, wavelength: 535,
-        },
-        {
-          name: 'g', value: 3490, wavelength: 560,
-        },
-        {
-          name: 'h', value: 4000, wavelength: 585,
-        },
-        {
-          name: 'r', value: 3000, wavelength: 610,
-        },
-        {
-          name: 'i', value: 2000, wavelength: 645,
-        },
-        {
-          name: 's', value: 2780, wavelength: 680,
-        },
-        {
-          name: 'j', value: 1890, wavelength: 705,
-        },
-        {
-          name: 't', value: 2390, wavelength: 730,
-        },
-        {
-          name: 'u', value: 3490, wavelength: 760,
-        },
-      ],
+      spectroscope: [],
       config: {
         map: {},
         video: {},
@@ -195,10 +152,6 @@ class Dashboard extends Component {
           t: {
             color: '#c80000',
             wavelength: 730,
-          },
-          u: {
-            color: '#8d0000',
-            wavelength: 760,
           }
         }
       },
@@ -235,7 +188,7 @@ class Dashboard extends Component {
             lng = data.lng;
             signal = data.signal;
             numberOfSatellites = data.numberOfSatellites;
-            spectroscope = processSpectroscope(data.spectroscope);
+            spectroscope = processSpectroscope(data.spectroscope, this.state.config.spectroscope);
             ready = true;
           }
 
@@ -253,9 +206,11 @@ class Dashboard extends Component {
           center.lat = lat;
           center.lng = lng;
         } else {
-          center.lat = this.state.lat;
-          center.lng = this.state.lng;
+          center.lat = this.state.center.lat;
+          center.lng = this.state.center.lng;
         }
+
+        //console.log(oxygenConcentration);
 
         this.setState({
           numberOfSatellites, center, temperature: reverse(temperature), pressure: reverse(pressure), humidity: reverse(humidity),
@@ -292,61 +247,62 @@ class Dashboard extends Component {
   render() {
     const { classes } = this.props;
 
+    //console.log(this.state);
     if (this.state.ready) {
       return (
-        <div>
-          <CanSatAppBar signal={this.state.signal}>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap>
-            </Typography>
-          </CanSatAppBar>
-          <Grid container spacing={16} className={classes.mainGrid}>
-            <Grid item xs={12} sm={6} lg={4}>
-              <Paper className={classes.paper}>
-                <MapTile center={this.state.center} config={this.state.config.map} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={4}>
-              <Paper className={classes.paper}>
-                <TemperatureChart
-                  data={this.state.temperature}
-                  config={this.state.config.temperature} />
-              </Paper>
-              <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
-                <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={4}>
-              <Paper className={classes.paper}>
-                <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
-              </Paper>
-              <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
-                <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={4}>
-              <Paper className={classes.paper}>
-                <OxygenConcentrationChart data={this.state.oxygenConcentration} config={this.state.config.oxygenConcentration} />
-              </Paper>
-              <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
-                <CO2ConcentrationChart data={this.state.co2} config={this.state.config.co2} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={4}>
-              <Paper className={classes.paper}>
-                <SpectroscopeChart data={this.state.spectroscope} config={this.state.config.spectroscope} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} lg={4}>
-                <Paper className={classes.paper}>
-                  <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
-                </Paper>
-            </Grid>
+      <div>
+        <CanSatAppBar signal={this.state.signal}>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap>
+          </Typography>
+        </CanSatAppBar>
+        <Grid container spacing={16} className={classes.mainGrid}>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Paper className={classes.paper}>
+              <MapTile center={this.state.center} config={this.state.config.map} />
+            </Paper>
           </Grid>
-        </div>);
+          <Grid item xs={12} sm={6} lg={4}>
+            <Paper className={classes.paper}>
+              <TemperatureChart
+                data={this.state.temperature}
+                config={this.state.config.temperature} />
+            </Paper>
+            <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
+              <PressureChart data={this.state.pressure} config={this.state.config.pressure} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Paper className={classes.paper}>
+              <HumidityChart data={this.state.humidity} config={this.state.config.humidity} />
+            </Paper>
+            <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
+              <LightIntensityChart data={this.state.lightIntensity} config={this.state.config.lightIntensity} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Paper className={classes.paper}>
+              <OxygenConcentrationChart data={this.state.oxygenConcentration} config={this.state.config.oxygenConcentration} />
+            </Paper>
+            <Paper className={`${classes.paper} ${classes.bottomPaper}`}>
+              <CO2ConcentrationChart data={this.state.co2} config={this.state.config.co2} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <Paper className={classes.paper}>
+              <SpectroscopeChart data={this.state.spectroscope} config={this.state.config.spectroscope} />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+              <Paper className={classes.paper}>
+                <AltitudeChart data={this.state.altitude} config={this.state.config.altitude} />
+              </Paper>
+          </Grid>
+        </Grid>
+      </div>);
     } else {
       return (
         <div className={classes.loadingContainer}>
@@ -378,48 +334,39 @@ const processRadioStrength = radioStrength => {
   }
 }
 
-const processSpectroscope = spectroscope => [
+const processSpectroscope = (spectroscope, config) => [
   {
-    name: 'a', value: spectroscope.a,
+    name: 'a', value: spectroscope.a, wavelength: config.a.wavelength
   },
   {
-    name: 'b', value: spectroscope.b,
+    name: 'b', value: spectroscope.b, wavelength: config.b.wavelength
   },
   {
-    name: 'c', value: spectroscope.c,
+    name: 'c', value: spectroscope.c, wavelength: config.c.wavelength
   },
   {
-    name: 'd', value: spectroscope.d,
+    name: 'd', value: spectroscope.d, wavelength: config.d.wavelength
   },
   {
-    name: 'e', value: spectroscope.e,
+    name: 'e', value: spectroscope.e, wavelength: config.e.wavelength
   },
   {
-    name: 'f', value: spectroscope.f,
+    name: 'f', value: spectroscope.f, wavelength: config.f.wavelength
   },
   {
-    name: 'g', value: spectroscope.g,
+    name: 'g', value: spectroscope.g, wavelength: config.g.wavelength
   },
   {
-    name: 'h', value: spectroscope.h,
+    name: 'h', value: spectroscope.h, wavelength: config.h.wavelength
   },
   {
-    name: 'r', value: spectroscope.r,
+    name: 'r', value: spectroscope.r, wavelength: config.r.wavelength
   },
   {
-    name: 'i', value: spectroscope.i,
+    name: 'i', value: spectroscope.i, wavelength: config.i.wavelength
   },
   {
-    name: 's', value: spectroscope.s,
-  },
-  {
-    name: 'r', value: spectroscope.r,
-  },
-  {
-    name: 't', value: spectroscope.t,
-  },
-  {
-    name: 'u', value: spectroscope.u,
+    name: 's', value: spectroscope.s, wavelength: config.s.wavelength
   },
 ];
 

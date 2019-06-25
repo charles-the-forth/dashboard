@@ -63,10 +63,12 @@ const connectToPort = portName => {
             buffer += input.toString();
             if (buffer.indexOf('END') !== -1) {
                 const data = buffer.substring(buffer.indexOf('START') + 6, buffer.indexOf('END') - 1);
+                
+                //console.log(data);
                 buffer = buffer.substring(buffer.indexOf('\n') + 1);
 
 
-                const dataObj = transformToDataObject(data.split(/[=;]/), index);
+                const dataObj = transformToDataObject(data.split(';'), index);
 
                 db.collection('messagesItaly').add(dataObj);              
                 io.sockets.emit('data updated', dataObj);
@@ -79,6 +81,19 @@ const connectToPort = portName => {
 server.listen(serverPort, () => console.log(`Listening on port ${serverPort}`));
 
 const transformToDataObject = (array, index) => {
+    
+    /*Serial.print(String(data1.humidityCanSat) + ";"+ String(data1.humidityExternal) + ";" + String(data2.humiditySCD30) + ";");
+    Serial.print(String(data1.pressureCanSat) + ";" + String(data1.pressureExternal) + ";" + String(data1.altitudeCanSat) + ";");
+    Serial.print(String(data1.altitudeExternal) + ";" + String(data3.accelerationX)+ ";" + String(data3.accelerationY) + ";");
+    Serial.print(String(data3.accelerationZ) + ";" + String(data3.rotationX) + ";" + String(data3.rotationY) + ";");
+    Serial.print(String(data3.rotationZ) + ";" + String(data3.magnetometerX) + ";" + String(data3.magnetometerY) + ";");
+    Serial.print(String(data3.magnetometerZ) + ";" + String(data2.latInt) + ";" + String(data2.lonInt) + ";");
+    Serial.print(String(data2.latAfterDot) + ";" + String(data2.lonAfterDot) + ";" + String(data1.co2SCD30) + ";"  + String(data1.co2CCS811) + ";");
+    Serial.print(String(data2.tvoc) + ";"  + String(data2.o2Concentration) + ";");
+    Serial.print(String(data4.a) + ";" + String(data4.b) + ";" + String(data4.c) + ";" + String(data4.d) + ";" + String(data4.e) + ";" + String(data4.f) + ";" + String(data4.g) + ";" + String(data4.h) + ";" + String(data4.i) + ";" + String(data4.j) + ";" + String(data4.r) + ";" + String(data4.s) + ";" + String(data4.t) + ";");
+    Serial.println(String(data2.numberOfSatellites) + ";"  + String(rssi) + ";END");
+    console.log(array);
+    console.log(array.length);*/
     const result = {
         messageId: parseInt(array[0]),
         lightIntensity: {
@@ -154,9 +169,9 @@ const transformToDataObject = (array, index) => {
             CCS811: parseFloat(array[30]),
         },
         tvoc: parseFloat(array[31]),
-        oxygenConcetration: {
+        oxygenConcentration: {
             time: index,
-            oxygenConcetration: parseFloat(array[32]),
+            oxygenConcentration: parseFloat(array[32]),
         },
         spectroscope: {
             time: index,
@@ -170,17 +185,12 @@ const transformToDataObject = (array, index) => {
             h: parseFloat(array[40]),
             i: parseFloat(array[41]),
             j: parseFloat(array[42]),
-            k: parseFloat(array[43]),
-            l: parseFloat(array[44]),
-            r: parseFloat(array[45]),
-            s: parseFloat(array[46]),
-            t: parseFloat(array[47]),
-            u: parseFloat(array[48]),
-            v: parseFloat(array[49]),
-            w: parseFloat(array[50]),
+            r: parseFloat(array[43]),
+            s: parseFloat(array[44]),
+            t: parseFloat(array[45]),
         },
-        numberOfSatellites: parseInt(array[51]),
-        radioStrength: calculateSignalStrength(array[52]),
+        numberOfSatellites: parseInt(array[46]),
+        radioStrength: calculateSignalStrength(array[47]),
     };
 
     return result;

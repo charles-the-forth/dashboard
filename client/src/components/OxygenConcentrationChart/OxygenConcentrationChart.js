@@ -12,11 +12,10 @@ const OxygenConcentrationChart = ({ config, data }) => {
             <AreaChart data={takeLast(config.maxShowedValues, data)}
                 margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className='chart'>
                 <CartesianGrid strokeDasharray="3 3" />
-                <YAxis>
+                <YAxis domain={[0, 100]}>
                     <Label value="%" offset={20} position="insideLeft" angle={-90}/>
                 </YAxis>
-                <Area name='O2' type='monotone' dataKey='oxygenConcetration' stroke='#311b92' fill='#6746C3' />
-                <Legend verticalAlign="bottom" />
+                <Area name='O2' type='monotone' dataKey='oxygenConcentration' stroke='#311b92' fill='#6746C3' />
             </AreaChart>
         </ResponsiveContainer>
     </div>
