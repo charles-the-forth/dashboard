@@ -13,9 +13,7 @@ const AltitudeChart = ({ config, data }) => (
                 <YAxis>
                     <Label value="m" offset={20} position="insideLeft" angle={-90}/>
                 </YAxis>
-                <Area type='monotone' name="CanSat" dataKey='altitudeCanSat' stroke='#087F23' fill='#4CAF50' />
                 <Area type='monotone' name="External" dataKey='altitudeExternal' stroke='#087F23' fill='#4CAF50' />
-                <Legend verticalAlign="bottom" />
             </AreaChart>
         </ResponsiveContainer>
     </div>

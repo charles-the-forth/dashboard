@@ -57,47 +57,7 @@ class Dashboard extends Component {
       co2: [],
       tvoc: [],
       oxygenConcentration: [],
-      spectroscope: [
-        {
-          name: 'a', value: 4000, wavelength: 410,
-        },
-        {
-          name: 'b', value: 3000, wavelength: 435,
-        },
-        {
-          name: 'c', value: 2000, wavelength: 460,
-        },
-        {
-          name: 'd', value: 2780, wavelength: 485,
-        },
-        {
-          name: 'e', value: 1890, wavelength: 510,
-        },
-        {
-          name: 'f', value: 2390, wavelength: 535,
-        },
-        {
-          name: 'g', value: 3490, wavelength: 560,
-        },
-        {
-          name: 'h', value: 4000, wavelength: 585,
-        },
-        {
-          name: 'r', value: 3000, wavelength: 610,
-        },
-        {
-          name: 'i', value: 2000, wavelength: 645,
-        },
-        {
-          name: 's', value: 2780, wavelength: 680,
-        },
-        {
-          name: 'j', value: 1890, wavelength: 705,
-        },
-        {
-          name: 't', value: 2390, wavelength: 730,
-        },
-      ],
+      spectroscope: [],
       config: {
         map: {},
         temperature: {
@@ -198,14 +158,12 @@ class Dashboard extends Component {
         humidity: append(humidity, this.state.humidity),
         lightIntensity: append(lightIntensity, this.state.lightIntensity),
         altitude: append(altitude, this.state.altitude),
-        co2: append(co2, processCO2(this.state.co2)),
+        co2: append(processCO2(co2), this.state.co2),
         tvoc: append(tvoc, this.state.tvoc),
-        oxygenConcentration: append({oxygenConcetration}, this.state.oxygenConcentration),
+        oxygenConcentration: append(oxygenConcetration, this.state.oxygenConcentration),
         signal: processRadioStrength(radioStrength),
         spectroscope: processSpectroscope(spectroscope, this.state.config.spectroscope),
       });
-
-      console.log(data);
     });
   }
 
@@ -235,6 +193,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.state);
     return (
       <div>
         <CanSatAppBar signal={this.state.signal}>
@@ -340,12 +299,6 @@ const processSpectroscope = (spectroscope, config) => [
   },
   {
     name: 's', value: spectroscope.s, wavelength: config.s.wavelength
-  },
-  {
-    name: 'r', value: spectroscope.r, wavelength: config.r.wavelength
-  },
-  {
-    name: 't', value: spectroscope.t, wavelength: config.t.wavelength
   },
 ];
 
