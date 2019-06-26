@@ -3,7 +3,8 @@ import * as SocketIO from 'socket.io';
 import { Server } from 'http';
 import { Socket } from 'net';
 import * as SerialPort from 'serialport';
-const { Console } = require('console');
+import * as fs from 'fs';
+const path = './result.csv';
 
 const app = express();
 const server = new Server(app);
@@ -43,7 +44,7 @@ const connectToPort = portName => {
         baudRate: 57600,
         parser: new SerialPort.parsers.Readline('\n')
     });
-
+    
     port.on('open', () => {
         running = true;
         let index = 0;
@@ -60,6 +61,7 @@ const connectToPort = portName => {
                 buffer = buffer.substring(buffer.indexOf('\n') + 1);
 
                 io.sockets.emit('data updated', transformToDataObject(data.split(';'), index));
+                fs.appendFile(path, data + '\n', (err) => {});
             }
             index++;
         });
