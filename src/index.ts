@@ -4,6 +4,9 @@ import { Server } from 'http';
 import { Socket } from 'net';
 import * as SerialPort from 'serialport';
 import * as admin from 'firebase-admin';
+import * as fs from 'fs';
+const path = './result.csv';
+
 const serviceAccount = require('../../cansatweb-1547364100927-firebase-adminsdk-b30cq-ad9f633c25.json');
 
 const app = express();
@@ -72,6 +75,7 @@ const connectToPort = portName => {
 
                 db.collection('messagesItaly').add(dataObj);              
                 io.sockets.emit('data updated', dataObj);
+                fs.appendFile(path, data + '\n', (err) => {});
             }
             index++;
         });
